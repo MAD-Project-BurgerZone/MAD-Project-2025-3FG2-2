@@ -20,12 +20,11 @@
             android:layout_width="208dp"
             android:layout_height="214dp"
             android:contentDescription="BurgerZone Logo"
-            android:src="@mipmap/burgerzone_logo" />
+            android:src="@mipmap/burgerzone_logo_green_foreground" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-25dp"
             android:text="BURGERZONE"
             android:textColor="@color/darkgreen"
             android:textSize="26sp"
@@ -37,7 +36,8 @@
             android:layout_marginBottom="36dp"
             android:text="Delicious in Every Bite"
             android:textColor="@color/darkgreen"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="italic"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -45,7 +45,8 @@
             android:layout_gravity="left"
             android:text="Email:"
             android:textColor="@color/darkgreen"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -62,7 +63,8 @@
             android:layout_gravity="left"
             android:text="Password:"
             android:textColor="@color/darkgreen"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -77,17 +79,18 @@
             style="@style/StandardButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="dp"
             android:backgroundTint="@color/darkgreen"
             android:text="SIGN IN"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:background="@drawable/rounded_background"/>
+            android:background="@drawable/rounded_background" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Don't have an account? Sign up"
             android:textColor="@color/darkgreen"
             android:textSize="14sp" />
