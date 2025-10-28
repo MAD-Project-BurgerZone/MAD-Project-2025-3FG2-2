@@ -19,7 +19,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/burger_foreground"
+            android:src="@mipmap/burger"
             android:scaleType="centerCrop"
             android:tint="@color/overlayblack"
             tools:ignore="UseAppTint" />
@@ -67,35 +67,350 @@
 
     </FrameLayout>
 
-    <com.google.android.flexbox.FlexboxLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        app:flexWrap="wrap"
-        app:justifyContent="flex_start"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="20dp">
+        android:layout_weight="1">
 
-        <!--Items Here-->
-
-        <LinearLayout
+        <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
-            android:layout_height="330dp"
-            android:background="@drawable/roundedrect">
+            android:layout_height="wrap_content"
+            app:flexWrap="wrap"
+            app:justifyContent="flex_start"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center|top">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@mipmap/burger_foreground"
-                android:scaleType="centerCrop"
-                android:background="@drawable/imagetopradius"
-                android:clipToOutline="true"
-            />
+            <!--Items Here-->
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="370dp"
+                android:layout_height="355dp"
+                android:background="@drawable/roundedrect"
+                android:backgroundTint="@color/darkgreen"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp">
 
-    </com.google.android.flexbox.FlexboxLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:src="@mipmap/burger_foreground"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/imagetopradius"
+                    android:clipToOutline="true"
+                    android:layout_marginBottom="20dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Classic Burger"
+                        android:layout_gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="5dp"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Juicy Beef patty with fresh veggies and special sauce, Juicy Beef patty with fresh veggies and special sauce"
+                        android:layout_gravity="center"
+                        android:textSize="15sp"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="start|center"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="40dp"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="20dp"
+                        android:text="PHP99.00"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        />
+
+                    <Button
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/round"
+                        android:backgroundTint="@color/white"
+                        android:text="+"
+                        android:textSize="30sp"
+                        android:textColor="@color/green"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="370dp"
+                android:layout_height="355dp"
+                android:background="@drawable/roundedrect"
+                android:backgroundTint="@color/darkgreen"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:src="@mipmap/burger_foreground"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/imagetopradius"
+                    android:clipToOutline="true"
+                    android:layout_marginBottom="20dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Classic Burger"
+                        android:layout_gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="5dp"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Juicy Beef patty with fresh veggies and special sauce, Juicy Beef patty with fresh veggies and special sauce"
+                        android:layout_gravity="center"
+                        android:textSize="15sp"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="start|center"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="40dp"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="20dp"
+                        android:text="PHP99.00"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        />
+
+                    <Button
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/round"
+                        android:backgroundTint="@color/white"
+                        android:text="+"
+                        android:textSize="30sp"
+                        android:textColor="@color/green"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="370dp"
+                android:layout_height="355dp"
+                android:background="@drawable/roundedrect"
+                android:backgroundTint="@color/darkgreen"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:src="@mipmap/burger_foreground"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/imagetopradius"
+                    android:clipToOutline="true"
+                    android:layout_marginBottom="20dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Classic Burger"
+                        android:layout_gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="5dp"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Juicy Beef patty with fresh veggies and special sauce, Juicy Beef patty with fresh veggies and special sauce"
+                        android:layout_gravity="center"
+                        android:textSize="15sp"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="start|center"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="40dp"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="20dp"
+                        android:text="PHP99.00"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        />
+
+                    <Button
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/round"
+                        android:backgroundTint="@color/white"
+                        android:text="+"
+                        android:textSize="30sp"
+                        android:textColor="@color/green"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="370dp"
+                android:layout_height="355dp"
+                android:background="@drawable/roundedrect"
+                android:backgroundTint="@color/darkgreen"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:src="@mipmap/burger_foreground"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/imagetopradius"
+                    android:clipToOutline="true"
+                    android:layout_marginBottom="20dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Classic Burger"
+                        android:layout_gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="5dp"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Juicy Beef patty with fresh veggies and special sauce, Juicy Beef patty with fresh veggies and special sauce"
+                        android:layout_gravity="center"
+                        android:textSize="15sp"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="start|center"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="40dp"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="20dp"
+                        android:text="PHP99.00"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        />
+
+                    <Button
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/round"
+                        android:backgroundTint="@color/white"
+                        android:text="+"
+                        android:textSize="30sp"
+                        android:textColor="@color/green"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
