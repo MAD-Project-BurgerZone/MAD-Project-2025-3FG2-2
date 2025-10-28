@@ -1,5 +1,4 @@
 package com.example.mad_project.data;
-
 import com.example.mad_project.models.FoodItem;
 import com.example.mad_project.models.User;
 
