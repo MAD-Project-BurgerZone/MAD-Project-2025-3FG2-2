@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/burger_background">
+    android:background="@color/darkgreen">
     >
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:text="Create Account"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#6BA573"
+            android:textColor="@color/darkgreen"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp" />
@@ -105,11 +105,12 @@
 
 
         <Button
+            style="@style/StandardButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="CREATE ACCOUNT"
             android:textColor="@android:color/white"
-            android:backgroundTint="#6BA573"
+            android:backgroundTint="@color/darkgreen"
             android:textStyle="bold"
             android:layout_marginBottom="16dp" />
 
@@ -118,7 +119,7 @@
             android:layout_height="wrap_content"
             android:text="Already have an account? Sign in"
             android:gravity="center"
-            android:textColor="#6BA573"
+            android:textColor="@color/darkgreen"
             android:textStyle="bold" />
 
     </LinearLayout>
