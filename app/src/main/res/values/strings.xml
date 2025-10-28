@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">MAD-PROJECT</string>
+
+    <string name="terms_privacy">
+    I agree to the <font color='#6BA573'>Terms of Service</font> and <font color='#6BA573'>Privacy Policy</font>.
+    </string>
+
+    <string name="sign_in">
+    Already have an account?<font color='#6BA573'> Sign In</font>
+    </string>
+
 </resources>

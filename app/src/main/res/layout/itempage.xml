@@ -13,70 +13,62 @@
         android:orientation="vertical"
         android:layout_margin="20dp"></LinearLayout>
 
-    <!-- Main White Card -->
+
     <LinearLayout
-        android:layout_width="85dp"
+        android:layout_width="138dp"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center_horizontal"
-        android:elevation="6dp"
         android:layout_margin="24dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="@android:color/white"
         android:clipToOutline="true"
-        android:backgroundTint="@android:color/white">
+        android:elevation="6dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-        <!-- Food Image -->
-        <ImageView
-            android:layout_width="160dp"
-            android:layout_height="160dp"
 
-            android:layout_marginBottom="12dp"
-            android:scaleType="centerInside"/>
-
-        <!-- Food Name -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:text="Cheese Burger"
+            android:textColor="#2F6942"
             android:textSize="22sp"
-            android:textColor="#2F6942"
-            android:textStyle="bold"
-            android:layout_marginBottom="4dp"/>
+            android:textStyle="bold" />
 
-        <!-- Food Description -->
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Juicy grilled beef with melted cheese and fresh vegetables."
-            android:textSize="14sp"
-            android:textColor="#666666"
-            android:gravity="center"
             android:layout_marginBottom="20dp"
+            android:gravity="center"
             android:paddingLeft="8dp"
-            android:paddingRight="8dp"/>
+            android:paddingRight="8dp"
+            android:text="Juicy grilled beef with melted cheese and fresh vegetables."
+            android:textColor="#666666"
+            android:textSize="14sp" />
 
-        <!-- Price Label -->
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
             android:text="₱129.00"
-            android:textSize="20sp"
             android:textColor="#2F6942"
-            android:textStyle="bold"
-            android:layout_marginBottom="24dp"/>
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <!-- Order Button -->
         <Button
             android:id="@+id/btnOrder"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#2F6942"
             android:text="ORDER NOW"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:backgroundTint="#2F6942"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/rounded_button"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 
