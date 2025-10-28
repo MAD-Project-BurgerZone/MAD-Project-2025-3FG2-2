@@ -58,7 +58,7 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <!-- Order Button -->
+
         <Button
             android:id="@+id/btnOrder"
             android:layout_width="match_parent"
