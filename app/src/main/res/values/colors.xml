@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="overlayblack">#84000000</color>
     <color name="green">#4B7F52</color>
+    <color name="darkgreen">#28502E</color>
+    <color name="lightgreen">#6BAD74</color>
+
 </resources>
