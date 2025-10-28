@@ -99,7 +99,9 @@
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="I agree to the Terms of Service and Privacy Policy."
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/terms_privacy"
             android:textSize="12dp"
             />
 
@@ -116,9 +118,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Already have an account? Sign in"
+            android:text="@string/sign_in"
             android:gravity="center"
-            android:textColor="#6BA573"
             android:textStyle="bold" />
 
     </LinearLayout>
