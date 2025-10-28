@@ -79,7 +79,6 @@
             style="@style/StandardButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="dp"
             android:backgroundTint="@color/darkgreen"
             android:text="SIGN IN"
             android:textColor="#FFFFFF"
