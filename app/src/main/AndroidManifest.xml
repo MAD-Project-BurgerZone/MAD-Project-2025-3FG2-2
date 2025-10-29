@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MADPROJECT">
         <activity
+            android:name=".cards"
+            android:exported="false" />
+        <activity
+            android:name=".ItemPageActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
