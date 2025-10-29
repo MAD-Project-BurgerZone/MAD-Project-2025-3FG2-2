@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/darkgreen">
+    android:background="@color/green"
     >
 
     <LinearLayout
@@ -26,19 +26,28 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create Account"
-            android:textSize="20sp"
+            android:text="BURGERZONE"
+            android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/darkgreen"
             android:gravity="center"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="10dp"
+            android:text="Delicious in Every Bite"
+            android:textColor="@color/darkgreen"
+            android:textSize="14sp"
+            android:textStyle="italic"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
-            android:text="Full Name"
+            android:text="Full Name:"
             android:textStyle="bold"
             android:textColor="@color/darkgreen"
             />
@@ -55,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
-            android:text="Email"
+            android:text="Email:"
             android:textStyle="bold"
             android:textColor="@color/darkgreen"
             />
@@ -72,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
-            android:text="Password"
+            android:text="Password:"
             android:textStyle="bold"
             android:textColor="@color/darkgreen"
             />
@@ -88,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
-            android:text="Confirm Password"
+            android:text="Confirm Password:"
             android:textStyle="bold"
             android:textColor="@color/darkgreen"
             />
@@ -128,8 +137,7 @@
             android:text="@string/sign_in"
             android:gravity="center"
             android:textColor="@color/black"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold" />
+            android:layout_marginTop="10dp" />
 
     </LinearLayout>
 
