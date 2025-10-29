@@ -8,173 +8,273 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:background="@color/green"
-    />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@mipmap/burger"
-            android:scaleType="centerCrop"
-            android:tint="@color/overlayblack"
-            tools:ignore="UseAppTint" />
+        android:orientation="horizontal"
+        android:gravity="center|start">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center|start"
+        >
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="DELICIOUS IN EVERY"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="BITE"
-                android:layout_marginTop="-30dp"
-                android:layout_marginBottom="-20dp"
-                android:textSize="100sp"/>
-
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="-20dp"
-                style="@style/StandardButton"
-                android:backgroundTint="@color/lightgreen"
-                android:text="Order Now"
+                android:src="@mipmap/burgerzone_logo"
+                android:scaleType="centerCrop"
+                android:layout_marginLeft="-10dp"
             />
 
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="50dp"
-                style="@style/StandardButton"
-                android:backgroundTint="@color/darkgreen"
-                android:text="Learn more"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="BURGERZONE"
+                android:textSize="25sp"
+                android:layout_marginLeft="-23dp"
+                android:textStyle="bold"
             />
 
         </LinearLayout>
 
-    </FrameLayout>
+
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <com.google.android.flexbox.FlexboxLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:flexWrap="wrap"
-            app:justifyContent="flex_start"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center|top">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <!--Items Here-->
-
-            <LinearLayout
-                android:layout_width="370dp"
-                android:layout_height="355dp"
-                android:background="@drawable/roundedrect"
-                android:backgroundTint="@color/darkgreen"
-                android:orientation="vertical"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:src="@mipmap/burger_foreground"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/burger"
                     android:scaleType="centerCrop"
-                    android:background="@drawable/imagetopradius"
-                    android:clipToOutline="true"
-                    android:layout_marginBottom="20dp"
-                    />
+                    android:tint="@color/overlayblack"
+                    tools:ignore="UseAppTint" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="40dp">
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
-                        android:text="Classic Burger"
-                        android:layout_gravity="center"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="5dp"
-                        />
+                        android:text="DELICIOUS IN EVERY"
+                        android:textSize="20sp"/>
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
-                        android:text="Juicy Beef patty with fresh veggies and special sauce, Juicy Beef patty with fresh veggies and special sauce"
-                        android:layout_gravity="center"
-                        android:textSize="15sp"
-                        />
+                        android:text="BITE"
+                        android:layout_marginTop="-30dp"
+                        android:layout_marginBottom="-20dp"
+                        android:textSize="100sp"/>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="start|center"
-                    android:paddingEnd="40dp"
-                    android:paddingStart="40dp"
-                    >
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textSize="20dp"
-                        android:text="PHP99.00"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="-20dp"
+                        style="@style/StandardButton"
+                        android:backgroundTint="@color/lightgreen"
+                        android:text="Order Now"
                         />
 
                     <Button
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/round"
-                        android:backgroundTint="@color/white"
-                        android:text="+"
-                        android:textSize="30sp"
-                        android:textColor="@color/green"
+                        android:layout_width="200dp"
+                        android:layout_height="50dp"
+                        style="@style/StandardButton"
+                        android:backgroundTint="@color/darkgreen"
+                        android:text="Learn more"
                         />
 
                 </LinearLayout>
 
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="20dp"
+            >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="WELCOME, User!"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/darkgray"
+                    android:text="Lets Start Ordering!"
+                    android:layout_marginTop="-3dp"
+                    android:textSize="18sp"
+                    />
+
             </LinearLayout>
 
-        </com.google.android.flexbox.FlexboxLayout>
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_start"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center|top">
+
+                <!--Items Here-->
+
+                <!--
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="355dp"
+                    android:background="@drawable/roundedrect"
+                    android:backgroundTint="@color/darkgreen"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:src="@mipmap/burger_foreground"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/imagetopradius"
+                        android:clipToOutline="true"
+                        android:layout_marginBottom="20dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:text="Classic Burger"
+                            android:layout_gravity="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="5dp"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:text="Juicy Beef patty with fresh veggies and special sauce, Juicy Beef patty with fresh veggies and special sauce"
+                            android:layout_gravity="center"
+                            android:textSize="15sp"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="start|center"
+                        android:paddingEnd="40dp"
+                        android:paddingStart="40dp"
+                        >
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="20dp"
+                            android:text="PHP99.00"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            />
+
+                        <Button
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/round"
+                            android:backgroundTint="@color/white"
+                            android:text="+"
+                            android:textSize="25sp"
+                            android:textColor="@color/green"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                -->
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+        </LinearLayout>
 
     </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/green">
+        android:layout_height="80dp"
+        android:background="@color/green"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
 
         <!--Bot Nav Items Here-->
+
+        <!--Menu-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="MENU"
+            android:textSize="16sp"
+            android:layout_marginRight="20dp"
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="CART"
+            android:textSize="16sp"
+            android:layout_marginRight="20dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="LOGOUT"
+            android:textSize="16sp"
+            />
 
     </LinearLayout>
 

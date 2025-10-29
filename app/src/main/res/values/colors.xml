@@ -8,5 +8,6 @@
     <color name="lightgreen">#6BAD74</color>
     <color name="gray">#DEDEDE</color>
     <color name="lightgray">#F2F2F2</color>
+    <color name="darkgray">#373737</color>
 
 </resources>
