@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
-            android:text="Full Name"
+            android:text="Full Name:"
             android:textStyle="bold"
             android:textColor="@color/darkgreen"
             />
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
-            android:text="Email"
+            android:text="Email:"
             android:textStyle="bold"
             android:textColor="@color/darkgreen"
             />
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
-            android:text="Password"
+            android:text="Password:"
             android:textStyle="bold"
             android:textColor="@color/darkgreen"
             />
@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
-            android:text="Confirm Password"
+            android:text="Confirm Password:"
             android:textStyle="bold"
             android:textColor="@color/darkgreen"
             />
