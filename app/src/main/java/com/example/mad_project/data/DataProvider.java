@@ -12,7 +12,7 @@ public class DataProvider {
 
         HashMap<String, User> users = new HashMap<>();
 
-        users.put("user1", new User("user1@example.com", "UserOne", "password1"));
+        users.put("user1@example.com", new User("user1@example.com", "UserOne", "password1"));
         users.put("user2", new User("user2@example.com", "UserTwo", "password2"));
         users.put("user3", new User("user3@example.com", "UserThree", "password3"));
         users.put("user4", new User("user4@example.com", "UserFour", "password4"));

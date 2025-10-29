@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.mad_project.MainActivity;
 import com.example.mad_project.R;
+import com.example.mad_project.data.DataProvider;
 import com.example.mad_project.models.User;
 import com.example.mad_project.utils.IntentKeys;
 
@@ -33,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initialize(){
+
+        User.UserList.userList = DataProvider.provideUsers();
 
         TextView email = findViewById(R.id.email);
         TextView password = findViewById(R.id.password);
@@ -68,10 +71,6 @@ public class LoginActivity extends AppCompatActivity {
             finish();
 
         });
-
-
-        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-        //intent.putExtra(IntentKeys.USER, )
 
     }
 }
