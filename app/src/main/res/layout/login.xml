@@ -60,6 +60,7 @@
             android:textColor="#000000"
             android:textColorHint="#888888"
             android:id="@+id/email"
+            android:background="@drawable/editborder"
             />
 
         <TextView
@@ -79,6 +80,7 @@
             android:inputType="textPassword"
             android:textColor="#000000"
             android:textColorHint="#888888"
+            android:background="@drawable/editborder"
             android:id="@+id/password"/>
 
         <Button

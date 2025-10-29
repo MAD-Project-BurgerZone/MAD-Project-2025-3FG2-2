@@ -17,16 +17,15 @@ public class User implements Serializable {
         public static boolean checkCredentials(String email, String password, Context context){
 
             if(!userList.containsKey(email)){
-                AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Incorrect Credentials", "Incorrect Email or Password, Try Again", true);
+                AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Incorrect Credentials", "Incorrect Email or Password, Try Again", true, null);
                 return false;
             }
 
             if(!userList.get(email).getPassword().equals(password)){
-                AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Incorrect Credentials", "Incorrect Email or Password, Try Again", true);
+                AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Incorrect Credentials", "Incorrect Email or Password, Try Again", true, null);
                 return false;
             }
 
-            AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Success!", "Going to the Homepage...", false);
             return true;
 
         }
@@ -43,6 +42,7 @@ public class User implements Serializable {
         this.email = email;
         this.username = username;
         this.password = password;
+        userCart = new Cart(this);
     }
 
     public String getUsername() {

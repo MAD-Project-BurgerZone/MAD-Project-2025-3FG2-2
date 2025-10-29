@@ -4,16 +4,20 @@ import android.content.Context;
 
 import com.example.mad_project.utils.AlertDialogBuilder;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Cart {
+public class Cart implements Serializable {
 
-    HashMap<String, FoodOrder> cart;
+    private HashMap<String, FoodOrder> cart;
 
     public Cart(User owner){
 
         if(owner.getUserCart() == null){
             owner.setUserCart(this);
+        }
+        if(cart == null){
+            cart = new HashMap<>();
         }
 
     }
@@ -23,7 +27,7 @@ public class Cart {
         //If cart doesn't have the food yet
         if(!cart.containsKey(food.getFood())){
             cart.put(food.getFood(), new FoodOrder(food, amount));
-            AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Success!","Added " + amount + " " + food.getFood() + " to the Cart!", true);
+            AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Success!","Added " + amount + " " + food.getFood() + " to the Cart!", true, null);
             return;
         }
 
@@ -33,16 +37,16 @@ public class Cart {
 
     }
 
-    public void reduceFoodItem(FoodItem food, int amount, Context context) throws Exception {
+    public void reduceFoodItem(FoodItem food, int amount, Context context) {
 
         //Error Handle
         if (!cart.containsKey(food.getFood())) {
-            AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Invalid!", "Can't Remove A Non-Existing Order!", true);
+            AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Invalid!", "Can't Remove A Non-Existing Order!", true, null);
         } else {
 
             //If User Input is more than the current amount
             if (cart.get(food.getFood()).getAmount() < amount) {
-                AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Invalid!", "Can't Remove Amount greater than the current amount", true);
+                AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Invalid!", "Can't Remove Amount greater than the current amount", true, null);
                 return;
             }
 
@@ -51,6 +55,10 @@ public class Cart {
             currFood.setAmount(currFood.getAmount() - amount);
 
         }
+    }
+
+    public HashMap<String, FoodOrder> getCart() {
+        return cart;
     }
 
 }

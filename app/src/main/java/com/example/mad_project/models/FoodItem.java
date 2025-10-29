@@ -1,17 +1,17 @@
 package com.example.mad_project.models;
 
+import android.graphics.drawable.Drawable;
+
 public class FoodItem {
 
     private String food;
-    private int price;
-    private String[] details;
+    private double price;
     private String description;
 
-    public FoodItem(String food, int price, String[] details, String description){
+    public FoodItem(String food, double price, String description){
 
         this.food = food;
         this.price = price;
-        this.details = details;
         this.description = description;
 
     }
@@ -32,19 +32,11 @@ public class FoodItem {
         this.description = description;
     }
 
-    public String[] getDetails() {
-        return details;
-    }
-
-    public void setDetails(String[] details) {
-        this.details = details;
-    }
-
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

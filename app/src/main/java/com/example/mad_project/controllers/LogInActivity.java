@@ -1,5 +1,7 @@
 package com.example.mad_project.controllers;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.example.mad_project.MainActivity;
 import com.example.mad_project.R;
 import com.example.mad_project.data.DataProvider;
 import com.example.mad_project.models.User;
+import com.example.mad_project.utils.AlertDialogBuilder;
 import com.example.mad_project.utils.IntentKeys;
 
 public class LoginActivity extends AppCompatActivity {
@@ -36,14 +39,14 @@ public class LoginActivity extends AppCompatActivity {
     private void initialize(){
 
         User.UserList.userList = DataProvider.provideUsers();
+        Context context = this;
 
         TextView email = findViewById(R.id.email);
         TextView password = findViewById(R.id.password);
         Button button = findViewById(R.id.signinBTN);
         TextView register = findViewById(R.id.registerTXT);
 
-        Boolean isLoggedIn = getIntent().getBooleanExtra(IntentKeys.IS_LOGGED_IN, false);
-
+        //Button Handle
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,23 +55,28 @@ public class LoginActivity extends AppCompatActivity {
 
                     //Save the user logged in and the login state from the HashMap
                     User loggedInUser = User.UserList.userList.get(email.getText().toString());
-
-                    //Create intent to go to MainActivity
-                    Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                    intent.putExtra(IntentKeys.IS_LOGGED_IN, true);
-                    intent.putExtra(IntentKeys.USER, loggedInUser);
-                    startActivity(intent);
-                    finish();
+                    AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Success!", "Going to the Homepage...", false,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //Create intent to go to MainActivity
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    intent.putExtra(IntentKeys.IS_LOGGED_IN, true);
+                                    intent.putExtra(IntentKeys.USER, loggedInUser);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
                 }
             }
 
         });
 
+        //Register Button Handle
         register.setOnClickListener(v -> {
 
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
-            finish();
 
         });
 

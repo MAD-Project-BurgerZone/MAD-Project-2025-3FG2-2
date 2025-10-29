@@ -21,6 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MADPROJECT">
         <activity
+            android:name=".controllers.HomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".controllers.RegisterActivity"
             android:exported="false" />
         <activity
