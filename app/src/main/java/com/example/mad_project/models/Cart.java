@@ -2,8 +2,6 @@ package com.example.mad_project.models;
 
 import android.content.Context;
 
-import androidx.appcompat.app.AlertDialog;
-
 import com.example.mad_project.utils.AlertDialogBuilder;
 
 import java.util.HashMap;
@@ -38,22 +36,21 @@ public class Cart {
     public void reduceFoodItem(FoodItem food, int amount, Context context) throws Exception {
 
         //Error Handle
-        if(!cart.containsKey(food.getFood())){
-            AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Invalid!","Can't Remove A Non-Existing Order!", true);
-            return;
+        if (!cart.containsKey(food.getFood())) {
+            AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Invalid!", "Can't Remove A Non-Existing Order!", true);
+        } else {
+
+            //If User Input is more than the current amount
+            if (cart.get(food.getFood()).getAmount() < amount) {
+                AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Invalid!", "Can't Remove Amount greater than the current amount", true);
+                return;
+            }
+
+            //Reduce item amount
+            FoodOrder currFood = cart.get(food.getFood());
+            currFood.setAmount(currFood.getAmount() - amount);
+
         }
-
-        //If User Input is more than the current amount
-        if(cart.get(food.getFood()).getAmount() < amount){
-            AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Invalid!","Can't Remove Amount greater than the current amount", true);
-            return;
-        }
-
-        //Reduce item amount
-        FoodOrder currFood = cart.get(food.getFood());
-        currFood.setAmount(currFood.getAmount() - amount);
-
     }
-
 
 }
