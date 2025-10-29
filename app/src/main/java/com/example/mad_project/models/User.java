@@ -1,10 +1,11 @@
 package com.example.mad_project.models;
-
 public class User {
 
     private String email;
     private String username;
     private String password;
+
+    private Cart userCart;
 
     public User(String email, String username, String password){
         this.email = email;
@@ -36,6 +37,12 @@ public class User {
         this.email = email;
     }
 
+    public Cart getUserCart(){
+        return userCart;
+    }
 
+    public void setUserCart(Cart userCart){
+        this.userCart = userCart;
+    }
 
 }
