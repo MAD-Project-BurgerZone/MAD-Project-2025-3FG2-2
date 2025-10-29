@@ -13,9 +13,11 @@ public class Cart implements Serializable {
 
     public Cart(User owner){
 
+        //Link Cart to User if not already linked
         if(owner.getUserCart() == null){
             owner.setUserCart(this);
         }
+        //Initialize Cart HashMap if Null
         if(cart == null){
             cart = new HashMap<>();
         }
@@ -49,7 +51,6 @@ public class Cart implements Serializable {
                 AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Invalid!", "Can't Remove Amount greater than the current amount", true, null);
                 return;
             }
-
             //Reduce item amount
             FoodOrder currFood = cart.get(food.getFood());
             currFood.setAmount(currFood.getAmount() - amount);

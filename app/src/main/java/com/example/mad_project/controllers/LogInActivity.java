@@ -51,6 +51,16 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if(email.getText().toString().isEmpty() || password.getText().toString().isEmpty()){
+                    if(email.getText().toString().isEmpty()){
+                        email.setError("Email is required");
+                    }
+                    if(password.getText().toString().isEmpty()){
+                        password.setError("Password is required");
+                    }
+                    return;
+                }
+
                 if(User.UserList.checkCredentials(email.getText().toString(), password.getText().toString(), LoginActivity.this)){
 
                     //Save the user logged in and the login state from the HashMap
@@ -61,12 +71,14 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     //Create intent to go to MainActivity
                                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                    intent.putExtra(IntentKeys.IS_LOGGED_IN, true);
                                     intent.putExtra(IntentKeys.USER, loggedInUser);
                                     startActivity(intent);
                                     finish();
                                 }
                             });
+                } else {
+                    email.setError("Incorrect Credentials");
+                    password.setError("Incorrect Credentials");
                 }
             }
 

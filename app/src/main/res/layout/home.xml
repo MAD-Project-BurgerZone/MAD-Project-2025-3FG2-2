@@ -126,7 +126,7 @@
                     android:text="WELCOME, User!"
                     android:id="@+id/welcomeTXT"
                     android:textStyle="bold"
-                    android:textSize="25sp"
+                    android:textSize="20sp"
                     />
 
                 <TextView
@@ -135,7 +135,7 @@
                     android:textColor="@color/darkgray"
                     android:text="Lets Start Ordering!"
                     android:layout_marginTop="-3dp"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     />
 
             </LinearLayout>
