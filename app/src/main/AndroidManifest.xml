@@ -22,6 +22,13 @@
         android:theme="@style/Theme.MADPROJECT">
 
         <activity
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            android:name=".MenuActivity"
+=======
+<<<<<<< HEAD
+>>>>>>> 32c8892fcc52abcfa1475b32d7434e6050a75f12
             android:name=".controllers.HomeActivity"
             android:exported="false" />
         <activity
@@ -64,6 +71,11 @@
             android:exported="false" />
         <activity
             android:name=".LearnMore"
+<<<<<<< HEAD
+=======
+>>>>>>> 7c9ed47891b34a00280310ebbbf9f0141c823135
+>>>>>>> 13879e61657dc5a98bcb170c1c8c76f1d56cbca0
+>>>>>>> 32c8892fcc52abcfa1475b32d7434e6050a75f12
             android:exported="false" />
         <activity
             android:name=".cards"
