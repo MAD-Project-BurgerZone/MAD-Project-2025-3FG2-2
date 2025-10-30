@@ -151,93 +151,6 @@
 
                 <!--Items Here-->
 
-                <LinearLayout
-                    android:layout_width="300dp"
-                    android:layout_height="355dp"
-                    android:background="@drawable/roundedrect"
-                    android:backgroundTint="@color/darkgreen"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginLeft="5dp">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="160dp"
-                        android:src="@mipmap/burger_foreground"
-                        android:scaleType="centerCrop"
-                        android:background="@drawable/imagetopradius"
-                        android:clipToOutline="true"
-                        android:layout_marginBottom="20dp"
-                        />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="40dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/white"
-                            android:text="Classic Burger"
-                            android:layout_gravity="center"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="5dp"
-                            />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:textColor="@color/white"
-                            android:text="Juicy Beef patty with fresh veggies and special sauce, Juicy Beef patty with fresh veggies and special sauce"
-                            android:layout_gravity="center"
-                            android:textSize="12sp"
-                            />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center|start"
-                        android:orientation="horizontal"
-                        android:paddingEnd="20dp"
-                        android:paddingStart="40dp"
-                        android:layout_marginBottom="10dp"
-                        >
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textSize="20sp"
-                            android:text="PHP99.00"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            />
-
-                        <Button
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
-                            android:background="@drawable/roundedrect"
-                            android:backgroundTint="@color/white"
-                            android:text="+"
-                            android:textSize="20sp"
-                            android:textAlignment="center"
-                            android:textColor="@color/green"
-                        />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-
-
             </com.google.android.flexbox.FlexboxLayout>
 
         </LinearLayout>
@@ -255,31 +168,91 @@
         <!--Bot Nav Items Here-->
 
         <!--Menu-->
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="MENU"
-            android:textSize="16sp"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_marginRight="20dp"
-            />
+            android:id="@+id/navMenu">
+            <ImageView
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:src="@drawable/home_white"
+                android:contentDescription="Home Icon"
+                android:layout_marginBottom="-5dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="MENU"
+                android:textSize="13sp"
+                />
+        </LinearLayout>
 
-        <TextView
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="CART"
-            android:textSize="16sp"
-            android:layout_marginRight="20dp"
-            />
+            android:layout_marginRight="10dp"
+            android:id="@+id/navOrders">
 
-        <TextView
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:id="@+id/navCart">
+                <ImageView
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:src="@drawable/shoppingcart"
+                    android:contentDescription="Cart Icon"
+                    android:layout_marginBottom="-5dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="CART"
+                    android:textSize="13sp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:id="@+id/notificationContainer">
+
+                <!-- Notification Badge -->
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="LOGOUT"
-            android:textSize="16sp"
-            />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/navLogout">
+            <ImageView
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:src="@drawable/logout"
+                android:contentDescription="Log Out"
+                android:layout_marginBottom="-5dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="LOGOUT"
+                android:textSize="13sp"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 

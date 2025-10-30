@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.mad_project.R;
 import com.example.mad_project.models.User;
+import com.example.mad_project.utils.AlertDialogBuilder;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -47,13 +48,16 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String errors = "";
+                Boolean error = false;
 
+                //Check for empty fields
                 if (username.getText().toString().trim().isEmpty()
                         || email.getText().toString().trim().isEmpty()
                         || password.getText().toString().trim().isEmpty()
                         || confirmPassword.getText().toString().trim().isEmpty())
                 {
+
+                    error = true;
 
                     if(username.getText().toString().isEmpty()){
                         username.setError("Username is required");
@@ -68,34 +72,50 @@ public class RegisterActivity extends AppCompatActivity {
                         confirmPassword.setError("Please confirm your password");
                     }
 
-                    return;
+                }
 
+                //check if in email format
+                if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
+                    email.setError("Please enter a valid email address");
+                    error = true;
                 }
 
                 //If email already exists
-                if(User.UserList.userList.containsKey(email.getText().toString())){
+                if(User.UserList.checkUser(email.getText().toString())){
                     email.setError("An account with this email already exists");
-                    return;
+                    error = true;
                 }
 
                 //If password do not match
                 if(!password.getText().toString().equals(confirmPassword.getText().toString())){
                     confirmPassword.setError("Passwords do not match");
-                    return;
+                    error = true;
                 }
 
                 //If terms not agreed
                 if(!terms.isChecked()){
                     terms.setError("You must agree to the terms and conditions");
+                    error = true;
+                }
+
+                if(error){
                     return;
                 }
 
                 //If no errors, proceed to register the user
-                User.UserList.userList.put(email.getText().toString(),
+                User.UserList.addUser(email.getText().toString(),
                         new User(email.getText().toString(),
                                 username.getText().toString(),
                                 password.getText().toString()));
-                finish();
+
+                //Finish Activity and go back to Login
+                AlertDialogBuilder dialog = new AlertDialogBuilder(RegisterActivity.this,
+                        "Success!",
+                        "Account Registered! Going back to Login Page...",
+                        false,
+                        (dialogInterface, which) -> {
+                            finish();
+                        });
             }
         });
 

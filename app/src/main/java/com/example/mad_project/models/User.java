@@ -11,10 +11,18 @@ public class User implements Serializable {
 
     public static class UserList{
 
-        public static HashMap<String, User> userList;
+        private static HashMap<String, User> userList;
+
+        private static void checkUserListInitialized(){
+            if(userList == null){
+                userList = new HashMap<>();
+            }
+        }
 
         //Check if correct credentials
         public static boolean checkCredentials(String email, String password, Context context){
+
+            checkUserListInitialized();
 
             if(!userList.containsKey(email)){
                 AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Incorrect Credentials", "Incorrect Email or Password, Try Again", true, null);
@@ -30,19 +38,37 @@ public class User implements Serializable {
 
         }
 
+        public static void addUser(String email, User newUser){
+            checkUserListInitialized();
+            if(!userList.containsKey(email)){
+                userList.put(email, newUser);
+            }
+        }
+
+        public static boolean checkUser(String email){
+            checkUserListInitialized();
+            return userList.containsKey(email);
+        }
+
+        public static User getUser(String email){
+            checkUserListInitialized();
+            return userList.get(email);
+        }
+
     }
 
     private String email;
     private String username;
     private String password;
-
     private Cart userCart;
 
     public User(String email, String username, String password){
         this.email = email;
         this.username = username;
         this.password = password;
-        userCart = new Cart(this);
+        if(userCart == null){
+            userCart = new Cart(this);
+        }
     }
 
     public String getUsername() {

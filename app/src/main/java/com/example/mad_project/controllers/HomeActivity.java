@@ -3,12 +3,15 @@ package com.example.mad_project.controllers;
 import static android.view.View.TEXT_ALIGNMENT_CENTER;
 import static android.view.View.TEXT_ALIGNMENT_TEXT_START;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +30,7 @@ import com.example.mad_project.data.DataProvider;
 import com.example.mad_project.models.Cart;
 import com.example.mad_project.models.FoodItem;
 import com.example.mad_project.models.User;
+import com.example.mad_project.utils.AlertDialogBuilder;
 import com.example.mad_project.utils.IntentKeys;
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -36,6 +40,9 @@ public class HomeActivity extends AppCompatActivity {
 
     Intent intent;
     User currentUser;
+    LinearLayout cartBTN;
+    LinearLayout homeBTN;
+    LinearLayout logoutBTN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +61,17 @@ public class HomeActivity extends AppCompatActivity {
 
         TextView welcomeTXT = findViewById(R.id.welcomeTXT);
         FlexboxLayout flex = findViewById(R.id.flexboxlayout);
+        cartBTN = findViewById(R.id.notificationContainer);
+        logoutBTN = findViewById(R.id.navLogout);
 
+        //Get Current User
         intent = getIntent();
-        currentUser = (User) intent.getSerializableExtra(IntentKeys.USER);
+        currentUser = User.UserList.getUser(intent.getStringExtra(IntentKeys.USER_EMAIL));
         welcomeTXT.setText("Welcome, " + currentUser.getUsername() + "!");
 
         List<FoodItem> foodItems = DataProvider.provideFoodItems();
+
+        currentUser.getUserCart().refreshCartView(this, cartBTN, currentUser);
 
         //Generate Food Cards
         for(FoodItem item : foodItems){
@@ -67,7 +79,24 @@ public class HomeActivity extends AppCompatActivity {
             flex.addView(foodCard);
         }
 
+        logoutBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                intent.removeExtra(IntentKeys.USER);
+                AlertDialogBuilder dialog = new AlertDialogBuilder(HomeActivity.this, "Logged Out", "You have been logged out successfully.", false,
+                        new android.content.DialogInterface.OnClickListener() {;
+                            @Override
+                            public void onClick(android.content.DialogInterface dialog, int which) {
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+            }
+        });
+
     }
+
     private LinearLayout createFoodCard(FoodItem item) {
         // Main card container
         LinearLayout mainLayout = new LinearLayout(this);
@@ -186,11 +215,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void onAddButtonClick(FoodItem item) {
-
         //Add to the User Cart
         currentUser.getUserCart().addFoodItem(item, 1, HomeActivity.this);
-        // Handle the add button click
-        Toast.makeText(this, "Added " + item.getFood() + " now " + currentUser.getUserCart().getCart().get(item.getFood()).getAmount(), Toast.LENGTH_SHORT).show();
+        currentUser.getUserCart().refreshCartView(this, cartBTN, currentUser);
     }
 
     // Helper method to convert dp to pixels

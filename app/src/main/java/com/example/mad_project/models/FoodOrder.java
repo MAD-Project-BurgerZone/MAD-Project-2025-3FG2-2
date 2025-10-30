@@ -1,11 +1,11 @@
 package com.example.mad_project.models;
 
-//Inner Food Class for to put in cart
+//Represents an order of a specific food item with a certain amount in the user's cart
 public class FoodOrder {
 
     private int amount;
     private FoodItem food;
-    private String name;
+    private String name;//Serves as a key for HashMap in Cart
 
     public FoodOrder(FoodItem food, int amount){
         this.amount = amount;

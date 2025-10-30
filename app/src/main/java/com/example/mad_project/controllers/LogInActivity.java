@@ -14,7 +14,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.mad_project.MainActivity;
 import com.example.mad_project.R;
 import com.example.mad_project.data.DataProvider;
 import com.example.mad_project.models.User;
@@ -38,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initialize(){
 
-        User.UserList.userList = DataProvider.provideUsers();
         Context context = this;
 
         TextView email = findViewById(R.id.email);
@@ -61,22 +59,23 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
+                //Check credentials
                 if(User.UserList.checkCredentials(email.getText().toString(), password.getText().toString(), LoginActivity.this)){
 
                     //Save the user logged in and the login state from the HashMap
-                    User loggedInUser = User.UserList.userList.get(email.getText().toString());
                     AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Success!", "Going to the Homepage...", false,
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     //Create intent to go to MainActivity
                                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                    intent.putExtra(IntentKeys.USER, loggedInUser);
+                                    intent.putExtra(IntentKeys.USER_EMAIL, email.getText().toString());
                                     startActivity(intent);
                                     finish();
                                 }
                             });
                 } else {
+                    //Show errors
                     email.setError("Incorrect Credentials");
                     password.setError("Incorrect Credentials");
                 }
