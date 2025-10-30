@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green"
+    android:id="@+id/main"
     >
 
     <LinearLayout
@@ -47,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
-            android:text="Full Name:"
+            android:text="User Name:"
             android:textStyle="bold"
             android:textColor="@color/darkgreen"
             />
@@ -55,9 +56,12 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:hint="Enter your full name"
-            android:inputType="textEmailAddress"
-            android:paddingHorizontal="3dp"
+            android:hint="Enter your Username"
+            android:inputType="text"
+            android:id="@+id/user"
+            android:textColor="@color/darkgray"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/editborder"
             android:layout_marginBottom="12dp" />
 
         <TextView
@@ -73,8 +77,11 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:hint="Enter your email"
+            android:id="@+id/email"
             android:inputType="textEmailAddress"
-            android:paddingHorizontal="3dp"
+            android:textColor="@color/darkgray"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/editborder"
             android:layout_marginBottom="12dp" />
 
         <TextView
@@ -91,8 +98,12 @@
             android:layout_height="48dp"
             android:hint="Enter your password"
             android:inputType="textPassword"
-            android:paddingHorizontal="3dp"
+            android:id="@+id/password"
+            android:textColor="@color/darkgray"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/editborder"
             android:layout_marginBottom="8dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,17 +117,23 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:hint="Confirm your password"
+            android:textColor="@color/darkgray"
             android:inputType="textPassword"
-            android:paddingHorizontal="3dp"
+            android:id="@+id/passwordconf"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/editborder"
             android:layout_marginBottom="8dp" />
 
         <RadioButton
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="10dp"
+            android:id="@+id/agreeTerms"
+            android:textColor="@color/black"
             android:text="@string/terms_privacy"
-            android:textSize="12dp"
+            android:textSize="13sp"
+            android:buttonTint="@color/darkgreen"
             />
 
 
@@ -127,6 +144,7 @@
             android:text="CREATE ACCOUNT"
             android:textColor="@android:color/white"
             android:backgroundTint="@color/darkgreen"
+            android:id="@+id/register"
             android:background="@drawable/bg_card_rounded"
             android:textStyle="bold"
             android:layout_marginBottom="20dp" />
@@ -136,6 +154,7 @@
             android:layout_height="wrap_content"
             android:text="@string/sign_in"
             android:gravity="center"
+            android:id="@+id/loginRedirect"
             android:textColor="@color/black"
             android:layout_marginTop="10dp" />
 

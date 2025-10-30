@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LearnMore"
+    android:background="@color/green"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/learn_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="24dp"
+            android:orientation="vertical"
+            android:padding="25dp"
+            android:background="@drawable/bg_card_rounded"
+            android:elevation="6dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:contentDescription="BurgerZone Logo"
+                android:src="@mipmap/burgerzone_logo_green_foreground" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BURGERZONE"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/darkgreen"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
+                android:text="Delicious in Every Bite"
+                android:textColor="@color/darkgreen"
+                android:textSize="14sp"
+                android:textStyle="italic"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Welcome to BURGERZONE, your ultimate burger craving fixer! We bring the juiciest, freshest, and most mouthwatering burgers straight to your door. Whether you’re a fan of classic cheeseburgers or daring gourmet creations, our app makes ordering fast, easy, and satisfying.
+Hot buns. Melty cheese. Perfect delivery. Every time."
+                android:textSize="20sp"
+                android:layout_margin="20dp"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
+                android:text="Developers:"
+                android:textColor="@color/darkgreen"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gacosta, Isaac"
+                android:textSize="20sp"
+                android:textColor="@color/darkgreen"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Manlapig John Emmanuel"
+                android:textSize="20sp"
+                android:textColor="@color/darkgreen"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pasacay Matthew"
+                android:textSize="20sp"
+                android:textColor="@color/darkgreen"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Reyes, Reimier"
+                android:textSize="20sp"
+                android:textColor="@color/darkgreen"
+                android:textStyle="bold"
+                />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:contentDescription="BurgerZone Logo"
+                android:src="@mipmap/_reyes_picture_foreground"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Villeno, Peter"
+                android:textSize="20sp"
+                android:textColor="@color/darkgreen"
+                android:textStyle="bold"
+                />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

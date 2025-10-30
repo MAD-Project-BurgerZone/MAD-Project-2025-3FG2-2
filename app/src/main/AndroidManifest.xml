@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,7 +21,53 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MADPROJECT">
         <activity
+<<<<<<< HEAD
             android:name=".MenuActivity"
+=======
+<<<<<<< HEAD
+            android:name=".controllers.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controllers.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controllers.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".controllers.LoginActivityPage"
+            android:exported="false" />
+        <activity
+            android:name=".controllers.LoginPageActivity"
+            android:banner="@drawable/app_icon_your_company"
+            android:exported="true"
+            android:icon="@drawable/app_icon_your_company"
+            android:label="@string/title_activity_login_page"
+            android:logo="@drawable/app_icon_your_company"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".controllers.DetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PlaybackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BrowseErrorActivity"
+=======
+            android:name=".LearnMore"
+>>>>>>> 7c9ed47891b34a00280310ebbbf9f0141c823135
+>>>>>>> 13879e61657dc5a98bcb170c1c8c76f1d56cbca0
             android:exported="false" />
         <activity
             android:name=".cards"

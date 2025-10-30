@@ -10,9 +10,9 @@ public class IntentKeys {
 
     //FOOD INTENT KEYS
     public static final String FOODS = "FOODS";
+    public static final String CART = "CART";
 
     //LOGIN VALIDATION INTENT KEY
     public static final String IS_LOGGED_IN = "LOGGED";
-
 
 }
