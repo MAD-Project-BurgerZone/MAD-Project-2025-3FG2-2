@@ -20,8 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MADPROJECT">
+
         <activity
-<<<<<<< HEAD
             android:name=".controllers.HomeActivity"
             android:exported="false" />
         <activity
@@ -32,10 +32,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".controllers.LoginActivityPage"
             android:exported="false" />
@@ -49,10 +49,10 @@
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".controllers.DetailsActivity"
             android:exported="false" />
@@ -61,9 +61,9 @@
             android:exported="false" />
         <activity
             android:name=".BrowseErrorActivity"
-=======
+            android:exported="false" />
+        <activity
             android:name=".LearnMore"
->>>>>>> 7c9ed47891b34a00280310ebbbf9f0141c823135
             android:exported="false" />
         <activity
             android:name=".cards"
@@ -76,7 +76,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
