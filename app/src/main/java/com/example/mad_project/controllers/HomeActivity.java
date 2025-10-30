@@ -40,9 +40,6 @@ public class HomeActivity extends AppCompatActivity {
 
     Intent intent;
     User currentUser;
-    LinearLayout cartBTN;
-    LinearLayout homeBTN;
-    LinearLayout logoutBTN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +58,6 @@ public class HomeActivity extends AppCompatActivity {
 
         TextView welcomeTXT = findViewById(R.id.welcomeTXT);
         FlexboxLayout flex = findViewById(R.id.flexboxlayout);
-        cartBTN = findViewById(R.id.notificationContainer);
-        logoutBTN = findViewById(R.id.navLogout);
 
         //Get Current User
         intent = getIntent();
@@ -71,36 +66,17 @@ public class HomeActivity extends AppCompatActivity {
 
         List<FoodItem> foodItems = DataProvider.provideFoodItems();
 
-        currentUser.getUserCart().refreshCartView(this, cartBTN, currentUser);
+        NavBarControl.initializeNavBarControls(this, currentUser,
+                findViewById(R.id.navMenu),
+                findViewById(R.id.navCart),
+                findViewById(R.id.navLogout),
+                findViewById(R.id.notificationContainer));
 
         //Generate Food Cards
         for(FoodItem item : foodItems){
             LinearLayout foodCard = createFoodCard(item);
             flex.addView(foodCard);
         }
-
-        logoutBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-                intent.removeExtra(IntentKeys.USER);
-                AlertDialogBuilder dialog = new AlertDialogBuilder(HomeActivity.this, "Log Out?", "Are you sure you want to log out?", false,
-                        new android.content.DialogInterface.OnClickListener() {;
-                            @Override
-                            public void onClick(android.content.DialogInterface dialog, int which) {
-                                AlertDialogBuilder confirm = new AlertDialogBuilder(HomeActivity.this, "Success!", "You have been logged out.", false,
-                                    new android.content.DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(android.content.DialogInterface dialog, int which) {
-                                            startActivity(intent);
-                                            finish();
-                                        }
-                                    });
-                            }
-                        },
-                        null);
-            }
-        });
 
     }
 
@@ -224,7 +200,7 @@ public class HomeActivity extends AppCompatActivity {
     private void onAddButtonClick(FoodItem item) {
         //Add to the User Cart
         currentUser.getUserCart().addFoodItem(item, 1, HomeActivity.this);
-        currentUser.getUserCart().refreshCartView(this, cartBTN, currentUser);
+        currentUser.getUserCart().refreshCartView(this, findViewById(R.id.notificationContainer), currentUser);
     }
 
     // Helper method to convert dp to pixels
