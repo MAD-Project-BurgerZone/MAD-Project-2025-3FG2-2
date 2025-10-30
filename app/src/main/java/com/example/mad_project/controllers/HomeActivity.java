@@ -84,14 +84,21 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                 intent.removeExtra(IntentKeys.USER);
-                AlertDialogBuilder dialog = new AlertDialogBuilder(HomeActivity.this, "Logged Out", "You have been logged out successfully.", false,
+                AlertDialogBuilder dialog = new AlertDialogBuilder(HomeActivity.this, "Log Out?", "Are you sure you want to log out?", false,
                         new android.content.DialogInterface.OnClickListener() {;
                             @Override
                             public void onClick(android.content.DialogInterface dialog, int which) {
-                                startActivity(intent);
-                                finish();
+                                AlertDialogBuilder confirm = new AlertDialogBuilder(HomeActivity.this, "Success!", "You have been logged out.", false,
+                                    new android.content.DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(android.content.DialogInterface dialog, int which) {
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
                             }
-                        });
+                        },
+                        null);
             }
         });
 

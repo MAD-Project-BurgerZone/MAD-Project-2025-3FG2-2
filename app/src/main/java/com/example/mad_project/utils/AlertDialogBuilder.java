@@ -16,4 +16,14 @@ public class AlertDialogBuilder {
                 .show();
     }
 
+    public AlertDialogBuilder(Context context, String title, String message, boolean cancellable, DialogInterface.OnClickListener callback, DialogInterface.OnClickListener negativeCallback) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setCancelable(cancellable)
+                .setPositiveButton("Yes", callback)
+                .setNegativeButton("No", negativeCallback)
+                .show();
+    }
+
 }
