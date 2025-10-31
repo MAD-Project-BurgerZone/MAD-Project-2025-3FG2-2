@@ -89,9 +89,11 @@ public class CheckoutActivity extends AppCompatActivity {
 
         //Manual RadioButton Behavior, Since each radio button is in different containers
         cashRBTN.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            selectedPaymentMethod = "Cash on Delivery";
             if (isChecked) otherRBTN.setChecked(false);
         });
         otherRBTN.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            selectedPaymentMethod = "Other Payment Methods";
             if (isChecked) cashRBTN.setChecked(false);
         });
 
@@ -205,11 +207,13 @@ public class CheckoutActivity extends AppCompatActivity {
     private void getSelectedDeliveryOptionLinearLayout() {
 
         priorityOption.setOnClickListener(view -> {
+
             resetDeliveryOptions();
 
             isPrioritySelected = true;
             isStandardSelected = false;
             isSaverSelected = false;
+            selectedDeliveryOption = "Priority Delivery";
             deliveryFeeTXT.setText("PHP 100.00");
             totalPriceTXT.setText(String.format("PHP %.2f", totalPrice + 100.00));
 
@@ -226,6 +230,7 @@ public class CheckoutActivity extends AppCompatActivity {
             isPrioritySelected = false;
             isStandardSelected = true;
             isSaverSelected = false;
+            selectedDeliveryOption = "Standard Delivery";
             deliveryFeeTXT.setText("PHP 50.00");
             totalPriceTXT.setText(String.format("PHP %.2f", totalPrice + 50.00));
 
@@ -242,6 +247,7 @@ public class CheckoutActivity extends AppCompatActivity {
             isPrioritySelected = false;
             isStandardSelected = false;
             isSaverSelected = true;
+            selectedDeliveryOption = "Saver Delivery";
             deliveryFeeTXT.setText("PHP 20.00");
             totalPriceTXT.setText(String.format("PHP %.2f", totalPrice + 20.00));
 

@@ -1,5 +1,7 @@
 package com.example.mad_project.controllers;
 
+import static com.example.mad_project.utils.TextScaler.dpToPx;
+
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -95,24 +97,24 @@ public class CartpageActivity extends AppCompatActivity {
             LinearLayout itemLayout = new LinearLayout(this);
             itemLayout.setOrientation(LinearLayout.HORIZONTAL);
             itemLayout.setGravity(Gravity.CENTER_VERTICAL);
-            int pad = dpToPx(12);
+            int pad = dpToPx(12,this);
             itemLayout.setPadding(pad, pad, pad, pad);
             itemLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_background));
             itemLayout.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightgray));
-            itemLayout.setElevation(dpToPx(3));
+            itemLayout.setElevation(dpToPx(3,this));
 
             LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            itemParams.setMargins(0, 0, 0, dpToPx(8));
+            itemParams.setMargins(0, 0, 0, dpToPx(8,this));
             itemLayout.setLayoutParams(itemParams);
 
             // ----- IMAGE -----
             ImageView itemImage = new ImageView(this);
             itemImage.setImageResource(order.getFood().getImageResourceId());
-            LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(dpToPx(60), dpToPx(60));
-            imgParams.setMarginEnd(dpToPx(12));
+            LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(dpToPx(60,this), dpToPx(60,this));
+            imgParams.setMarginEnd(dpToPx(12,this));
             itemImage.setLayoutParams(imgParams);
             itemImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             itemLayout.addView(itemImage);
@@ -147,7 +149,7 @@ public class CartpageActivity extends AppCompatActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            qtyParams.setMargins(dpToPx(8), 0, 0, 0);
+            qtyParams.setMargins(dpToPx(8,this), 0, 0, 0);
             qtyLayout.setLayoutParams(qtyParams);
 
             // Decrease Button
@@ -155,10 +157,10 @@ public class CartpageActivity extends AppCompatActivity {
             btnDecrease.setImageResource(R.drawable.minus_white);
             btnDecrease.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_background));
             btnDecrease.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.darkgreen));
-            LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(dpToPx(35), dpToPx(35));
+            LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(dpToPx(35,this), dpToPx(35,this));
             btnDecrease.setLayoutParams(btnParams);
             btnDecrease.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            btnDecrease.setPadding(dpToPx(6), dpToPx(6), dpToPx(6), dpToPx(6));
+            btnDecrease.setPadding(dpToPx(6,this), dpToPx(6,this), dpToPx(6,this), dpToPx(6,this));
 
             // Quantity text
             TextView tvQuantity = new TextView(this);
@@ -166,8 +168,8 @@ public class CartpageActivity extends AppCompatActivity {
             tvQuantity.setGravity(Gravity.CENTER);
             tvQuantity.setTextSize(16);
             tvQuantity.setTypeface(null, Typeface.BOLD);
-            LinearLayout.LayoutParams qtyTextParams = new LinearLayout.LayoutParams(dpToPx(40), LinearLayout.LayoutParams.WRAP_CONTENT);
-            qtyTextParams.setMargins(dpToPx(6), 0, dpToPx(6), 0);
+            LinearLayout.LayoutParams qtyTextParams = new LinearLayout.LayoutParams(dpToPx(40,this), LinearLayout.LayoutParams.WRAP_CONTENT);
+            qtyTextParams.setMargins(dpToPx(6,this), 0, dpToPx(6,this), 0);
             tvQuantity.setLayoutParams(qtyTextParams);
             tvQuantity.setTextColor(ContextCompat.getColor(this, R.color.black));
 
@@ -178,7 +180,7 @@ public class CartpageActivity extends AppCompatActivity {
             btnIncrease.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.darkgreen));
             btnIncrease.setLayoutParams(btnParams);
             btnIncrease.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            btnIncrease.setPadding(dpToPx(6), dpToPx(6), dpToPx(6), dpToPx(6));
+            btnIncrease.setPadding(dpToPx(6,this), dpToPx(6,this), dpToPx(6,this), dpToPx(6,this));
 
             // Add to layout
             qtyLayout.addView(btnDecrease);
@@ -230,11 +232,6 @@ public class CartpageActivity extends AppCompatActivity {
         }
     }
 
-    private int dpToPx(int dp) {
-        float density = getResources().getDisplayMetrics().density;
-        return Math.round(dp * density);
-    }
-
     private void displayNoCartMessage() {
         LinearLayout cartContainer = findViewById(R.id.cartContainer);
         cartContainer.removeAllViews();
@@ -250,7 +247,7 @@ public class CartpageActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        msgParams.setMargins(0, dpToPx(20), 0, 0);
+        msgParams.setMargins(0, dpToPx(20,this), 0, 0);
         noCartMessage.setLayoutParams(msgParams);
 
         cartContainer.addView(noCartMessage);
