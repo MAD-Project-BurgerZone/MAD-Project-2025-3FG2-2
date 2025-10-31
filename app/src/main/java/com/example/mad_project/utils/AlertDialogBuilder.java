@@ -43,7 +43,7 @@ public class AlertDialogBuilder {
                 .show();
     }
 
-    public AlertDialogBuilder(Context context, String title, String message, boolean cancellable, DialogInterface.OnClickListener callback, DialogInterface.OnClickListener negativeCallback, View customView, int bgColor, int titleColor, int messageColor) {
+    public AlertDialogBuilder(Context context, String title, String message, boolean cancellable, DialogInterface.OnClickListener callback, DialogInterface.OnClickListener negativeCallback, View customView, int bgColor, int titleColor, int messageColor, int positiveButtonColor, int negativeButtonColor) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title)
@@ -73,6 +73,16 @@ public class AlertDialogBuilder {
 
         if (titleView != null) titleView.setTextColor(titleColor);
         if (messageView != null) messageView.setTextColor(messageColor);
+
+        if (dialog.getButton(AlertDialog.BUTTON_POSITIVE) != null) {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(positiveButtonColor);
+        }
+
+        if (dialog.getButton(AlertDialog.BUTTON_NEGATIVE) != null) {
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(negativeButtonColor);
+        }
 
     }
 

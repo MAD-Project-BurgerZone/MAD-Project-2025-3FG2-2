@@ -303,10 +303,12 @@ public class HomeActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 },
-                mainLayout, // ✅ customView
+                mainLayout, // customview
                 ContextCompat.getColor(context, R.color.white),      // bgColor
                 ContextCompat.getColor(context, R.color.darkgreen),  // titleColor
-                ContextCompat.getColor(context, R.color.black)       // messageColor
+                ContextCompat.getColor(context, R.color.black),       // messageColor
+                ContextCompat.getColor(context, R.color.green),  // positiveButtonColor
+                ContextCompat.getColor(context, R.color.darkgray)        // negativeButtonColor
         );
     }
 
