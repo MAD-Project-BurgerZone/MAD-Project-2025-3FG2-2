@@ -25,6 +25,7 @@ public class DataProvider {
         users.put("user8", new User("user8@example.com", "UserEight", "password8"));
         users.put("user9", new User("user9@example.com", "UserNine", "password9"));
         users.put("user10", new User("user10@example.com", "UserTen", "password10"));
+        users.put("a", new User("a", "a", "a"));
 
         return users;
     }

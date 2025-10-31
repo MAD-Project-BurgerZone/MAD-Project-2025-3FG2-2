@@ -55,6 +55,7 @@ public class NavBarControl {
             public void onClick(View v) {
                 Intent intent = new Intent(context, CartpageActivity.class);
                 intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });
@@ -64,6 +65,7 @@ public class NavBarControl {
             public void onClick(View v) {
                 Intent intent = new Intent(context, HomeActivity.class);
                 intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });

@@ -24,6 +24,7 @@ import com.example.mad_project.R;
 import com.example.mad_project.models.Cart;
 import com.example.mad_project.models.FoodOrder;
 import com.example.mad_project.models.User;
+import com.example.mad_project.utils.AlertDialogBuilder;
 import com.example.mad_project.utils.IntentKeys;
 
 public class CheckoutActivity extends AppCompatActivity {
@@ -95,6 +96,13 @@ public class CheckoutActivity extends AppCompatActivity {
         otherRBTN.setOnCheckedChangeListener((buttonView, isChecked) -> {
             selectedPaymentMethod = "Other Payment Methods";
             if (isChecked) cashRBTN.setChecked(false);
+        });
+
+        checkoutBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCheckoutSummaryDialog();
+            }
         });
 
         //Get Selected Delivery Option
@@ -285,5 +293,129 @@ public class CheckoutActivity extends AppCompatActivity {
             checkoutBTN.setAlpha(0.5f);
         }
     }
+
+    private void showCheckoutSummaryDialog() {
+        // === Build Scrollable Custom View ===
+        LinearLayout mainLayout = new LinearLayout(this);
+        mainLayout.setOrientation(LinearLayout.VERTICAL);
+        mainLayout.setPadding(dpToPx(20), dpToPx(20), dpToPx(20), dpToPx(20));
+
+        // Title
+        TextView title = new TextView(this);
+        title.setText("Order Summary");
+        title.setTypeface(null, Typeface.BOLD);
+        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        title.setTextColor(ContextCompat.getColor(this, R.color.black));
+        title.setGravity(Gravity.CENTER_HORIZONTAL);
+        title.setPadding(0, 0, 0, dpToPx(10));
+        mainLayout.addView(title);
+
+        // Scroll container for items
+        android.widget.ScrollView scrollView = new android.widget.ScrollView(this);
+        LinearLayout itemListLayout = new LinearLayout(this);
+        itemListLayout.setOrientation(LinearLayout.VERTICAL);
+        scrollView.addView(itemListLayout);
+
+        // Populate items from cart
+        for (FoodOrder order : currentUser.getUserCart().getCart().values()) {
+            LinearLayout itemRow = new LinearLayout(this);
+            itemRow.setOrientation(LinearLayout.HORIZONTAL);
+            itemRow.setPadding(0, dpToPx(8), 0, dpToPx(8));
+            itemRow.setGravity(Gravity.CENTER_VERTICAL);
+
+            // === IMAGE ===
+            ImageView itemImage = new ImageView(this);
+            itemImage.setImageResource(order.getFood().getImageResourceId());
+            LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(dpToPx(45), dpToPx(45));
+            imgParams.setMarginEnd(dpToPx(10));
+            itemImage.setLayoutParams(imgParams);
+            itemImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            itemRow.addView(itemImage);
+
+            // === NAME, QUANTITY, TOTAL ===
+            TextView itemName = new TextView(this);
+            itemName.setText(order.getName());
+            itemName.setTextColor(ContextCompat.getColor(this, R.color.black));
+            itemName.setTextSize(14);
+            itemName.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+
+            TextView itemAmount = new TextView(this);
+            itemAmount.setText(String.format("x%d", order.getAmount()));
+            itemAmount.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+            itemAmount.setTypeface(null, Typeface.BOLD);
+            itemAmount.setPadding(dpToPx(4), 0, dpToPx(4), 0);
+
+            TextView itemTotal = new TextView(this);
+            double total = order.getFood().getPrice() * order.getAmount();
+            itemTotal.setText(String.format("PHP %.2f", total));
+            itemTotal.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+            itemTotal.setTypeface(null, Typeface.BOLD);
+            itemTotal.setPadding(dpToPx(8), 0, 0, 0);
+
+            itemRow.addView(itemName);
+            itemRow.addView(itemAmount);
+            itemRow.addView(itemTotal);
+
+            // Add item row to list
+            itemListLayout.addView(itemRow);
+        }
+
+        mainLayout.addView(scrollView);
+
+        // --- Delivery Info ---
+        TextView deliveryInfo = new TextView(this);
+        deliveryInfo.setTypeface(null, Typeface.BOLD);
+        deliveryInfo.setText("Delivery Option: " + selectedDeliveryOption);
+        deliveryInfo.setTextColor(ContextCompat.getColor(this, R.color.black));
+        deliveryInfo.setPadding(0, dpToPx(10), 0, 0);
+        mainLayout.addView(deliveryInfo);
+
+        // --- Payment Info ---
+        TextView paymentInfo = new TextView(this);
+        paymentInfo.setTypeface(null, Typeface.BOLD);
+        paymentInfo.setText("Payment Method: " + selectedPaymentMethod);
+        paymentInfo.setTextColor(ContextCompat.getColor(this, R.color.black));
+        paymentInfo.setPadding(0, dpToPx(6), 0, 0);
+        mainLayout.addView(paymentInfo);
+
+        // --- Total Price ---
+        TextView totalTXT = new TextView(this);
+        totalTXT.setText(String.format("Total Price: %s", totalPriceTXT.getText()));
+        totalTXT.setTypeface(null, Typeface.BOLD);
+        totalTXT.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        totalTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+        totalTXT.setPadding(0, dpToPx(10), 0, 0);
+        mainLayout.addView(totalTXT);
+
+        //
+        AlertDialogBuilder build = new AlertDialogBuilder(
+                this,
+                "Confirm Purchase",
+                "Please review your order below:",
+                true,
+                (dialog, which) -> {
+                    currentUser.getUserCart().clearCart(); // clear cart
+                    currentUser.getUserCart().refreshCartView(this, findViewById(R.id.navCart), currentUser);
+                    currentUser.getUserCart().refreshCartView(this, findViewById(R.id.notificationContainer), currentUser);
+                    dialog.dismiss();
+
+                    // Success + Redirect to Home
+                    android.widget.Toast.makeText(this, "Order placed successfully!", android.widget.Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                },
+                (dialog, which) -> dialog.dismiss(), // Cancel
+                mainLayout,
+                ContextCompat.getColor(this, R.color.white),       // bgColor
+                ContextCompat.getColor(this, R.color.darkgreen),   // titleColor
+                ContextCompat.getColor(this, R.color.black),       // messageColor
+                ContextCompat.getColor(this, R.color.green),       // positiveButtonColor
+                ContextCompat.getColor(this, R.color.darkgray)     // negativeButtonColor
+        );
+    }
+
 
 }

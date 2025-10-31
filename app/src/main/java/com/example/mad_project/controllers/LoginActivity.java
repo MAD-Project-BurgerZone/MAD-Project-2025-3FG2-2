@@ -22,6 +22,8 @@ import com.example.mad_project.utils.IntentKeys;
 
 public class LoginActivity extends AppCompatActivity {
 
+    static boolean isFirstLoad = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,12 @@ public class LoginActivity extends AppCompatActivity {
         TextView password = findViewById(R.id.password);
         Button button = findViewById(R.id.signinBTN);
         TextView register = findViewById(R.id.registerTXT);
+
+        if(isFirstLoad){
+            //Load Sample Data
+            User.UserList.initializeUserList();
+            isFirstLoad = false;
+        }
 
         //Button Handle
         button.setOnClickListener(new View.OnClickListener() {

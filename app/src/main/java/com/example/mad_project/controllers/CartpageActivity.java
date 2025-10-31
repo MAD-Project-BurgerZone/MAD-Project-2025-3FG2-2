@@ -86,6 +86,7 @@ public class CartpageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(CartpageActivity.this, CheckoutActivity.class);
                 intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });

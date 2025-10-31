@@ -2,6 +2,7 @@ package com.example.mad_project.models;
 
 import android.content.Context;
 
+import com.example.mad_project.data.DataProvider;
 import com.example.mad_project.utils.AlertDialogBuilder;
 
 import java.io.Serializable;
@@ -17,6 +18,10 @@ public class User implements Serializable {
             if(userList == null){
                 userList = new HashMap<>();
             }
+        }
+
+        public static void initializeUserList(){
+            userList = DataProvider.provideUsers();
         }
 
         //Check if correct credentials

@@ -122,4 +122,9 @@ public class Cart implements Serializable {
         float density = Resources.getSystem().getDisplayMetrics().density;
         return Math.round(dp * density);
     }
+
+    public void clearCart() {
+        cart.clear();
+        totalPrice = 0;
+    }
 }
