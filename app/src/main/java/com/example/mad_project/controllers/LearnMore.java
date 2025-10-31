@@ -1,4 +1,4 @@
-package com.example.mad_project;
+package com.example.mad_project.controllers;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.mad_project.R;
 
 public class LearnMore extends AppCompatActivity {
 
