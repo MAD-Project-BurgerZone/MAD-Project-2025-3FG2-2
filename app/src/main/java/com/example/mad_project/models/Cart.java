@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -19,10 +20,12 @@ import java.util.HashMap;
 public class Cart implements Serializable {
 
     private HashMap<String, FoodOrder> cart;
+    private double totalPrice;
 
     public Cart(User owner) {
         if (owner.getUserCart() == null) {
             owner.setUserCart(this);
+            totalPrice = 0;
             if (cart == null) {
                 cart = new HashMap<>();
             }
@@ -32,11 +35,14 @@ public class Cart implements Serializable {
     public void addFoodItem(FoodItem food, int amount, Context context) {
         if (!cart.containsKey(food.getFood())) {
             cart.put(food.getFood(), new FoodOrder(food, amount));
-            AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Success!", "Added " + amount + " " + food.getFood() + " to the Cart!", true, null);
+            totalPrice += food.getPrice() * amount;
+            Toast.makeText(context, "Added " + food.getFood() + " to the Cart!", Toast.LENGTH_SHORT).show();
             return;
         }
         FoodOrder currFood = cart.get(food.getFood());
         currFood.setAmount(currFood.getAmount() + amount);
+        totalPrice += food.getPrice() * amount;
+        Toast.makeText(context, "Added " + food.getFood() + " to the Cart!", Toast.LENGTH_SHORT).show();
     }
 
     public void reduceFoodItem(FoodItem food, int amount, Context context) {
@@ -49,11 +55,25 @@ public class Cart implements Serializable {
             }
             FoodOrder currFood = cart.get(food.getFood());
             currFood.setAmount(currFood.getAmount() - amount);
+            Toast.makeText(context, "Removed " + amount + " " + food.getFood() + " from the Cart!", Toast.LENGTH_SHORT).show();
+            totalPrice -= food.getPrice() * amount;
         }
     }
 
     public HashMap<String, FoodOrder> getCart() {
         return cart;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public double calculateTotalPrice() {
+        double total = 0;
+        for (FoodOrder order : cart.values()) {
+            total += order.getFood().getPrice() * order.getAmount();
+        }
+        return total;
     }
 
     public int getTotalItems() {

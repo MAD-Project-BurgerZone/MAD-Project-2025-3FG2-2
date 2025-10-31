@@ -1,0 +1,283 @@
+package com.example.mad_project.controllers;
+
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import com.example.mad_project.R;
+import com.example.mad_project.models.Cart;
+import com.example.mad_project.models.FoodOrder;
+import com.example.mad_project.models.User;
+import com.example.mad_project.utils.IntentKeys;
+
+public class CheckoutActivity extends AppCompatActivity {
+
+    //Elements
+    Button checkoutBTN;
+    LinearLayout itemContainer;
+    RadioButton cashRBTN, otherRBTN;
+    String selectedPaymentMethod;
+    String selectedDeliveryOption;
+    User currentUser;
+    TextView subtotalTXT, deliveryFeeTXT, totalPriceTXT;
+    LinearLayout priorityOption, standardOption, saverOption;
+    TextView priorityTXT, standardTXT, saverTXT;
+    TextView priorityPriceTXT, standardPriceTXT, saverPriceTXT;
+    boolean isPrioritySelected = false;
+    boolean isStandardSelected = false;
+    boolean isSaverSelected = false;
+    double totalPrice;
+    LinearLayout otherChoice, cashChoice;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.checkout);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        initialize();
+    }
+
+    private void initialize(){
+
+        Intent intent = getIntent();
+        currentUser = User.UserList.getUser(intent.getStringExtra(IntentKeys.USER_EMAIL));
+
+        itemContainer = findViewById(R.id.checkoutContainer);
+        checkoutBTN = findViewById(R.id.checkoutBTN);
+        otherRBTN = findViewById(R.id.otherRBTN);
+        cashRBTN = findViewById(R.id.cashRBTN);
+        subtotalTXT = findViewById(R.id.subtotalTXT);
+        deliveryFeeTXT = findViewById(R.id.deliveryFeeTXT);
+        totalPriceTXT = findViewById(R.id.totalPriceTXT);
+        totalPrice = currentUser.getUserCart().calculateTotalPrice();
+        priorityOption = findViewById(R.id.priorityOption);
+        standardOption = findViewById(R.id.standardOption);
+        saverOption = findViewById(R.id.saverOption);
+        priorityTXT = findViewById(R.id.priorityTXT);
+        standardTXT = findViewById(R.id.standardTXT);
+        saverTXT = findViewById(R.id.saverTXT);
+        priorityPriceTXT = findViewById(R.id.priorityPriceTXT);
+        standardPriceTXT = findViewById(R.id.standardPriceTXT);
+        saverPriceTXT = findViewById(R.id.saverPriceTXT);
+        otherChoice = findViewById(R.id.otherChoice);
+        cashChoice = findViewById(R.id.cashChoice);
+
+        //Clickable Layouts for Payment Method
+        cashChoice.setOnClickListener(view -> cashRBTN.setChecked(true));
+        otherChoice.setOnClickListener(view -> otherRBTN.setChecked(true));
+
+        //Manual RadioButton Behavior, Since each radio button is in different containers
+        cashRBTN.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) otherRBTN.setChecked(false);
+        });
+        otherRBTN.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) cashRBTN.setChecked(false);
+        });
+
+        //Get Selected Delivery Option
+        getSelectedDeliveryOptionLinearLayout();
+
+        //Initialize the Navbar
+        NavBarControl.initializeNavBarControls(this, currentUser,
+                findViewById(R.id.navMenu),
+                findViewById(R.id.navCart),
+                findViewById(R.id.navLogout),
+                findViewById(R.id.notificationContainer));
+
+        //Generate Checkout Items
+        generateCheckoutItems(currentUser.getUserCart());
+        subtotalTXT.setText(String.format("PHP %.2f", totalPrice));
+        updateCheckoutButtonState();
+
+    }
+
+    private void generateCheckoutItems(Cart cart) {
+        LinearLayout checkoutContainer = findViewById(R.id.checkoutContainer);
+        checkoutContainer.removeAllViews();
+
+        for (FoodOrder order : cart.getCart().values()) {
+            // ----- PARENT CARD -----
+            LinearLayout itemLayout = new LinearLayout(this);
+            itemLayout.setOrientation(LinearLayout.HORIZONTAL);
+            itemLayout.setGravity(Gravity.CENTER_VERTICAL);
+
+            int pad = dpToPx(12);
+            itemLayout.setPadding(pad, pad, pad, pad);
+            itemLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_background));
+            itemLayout.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightgray));
+            itemLayout.setElevation(dpToPx(3));
+
+            LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            itemParams.setMargins(0, 0, 0, dpToPx(8));
+            itemLayout.setLayoutParams(itemParams);
+
+            // ----- IMAGE -----
+            ImageView itemImage = new ImageView(this);
+            itemImage.setImageResource(order.getFood().getImageResourceId());
+            LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(dpToPx(60), dpToPx(60));
+            imgParams.setMarginEnd(dpToPx(12));
+            itemImage.setLayoutParams(imgParams);
+            itemImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            itemLayout.addView(itemImage);
+
+            // ----- TEXT INFO -----
+            LinearLayout infoLayout = new LinearLayout(this);
+            infoLayout.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout.LayoutParams infoParams =
+                    new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+            infoLayout.setLayoutParams(infoParams);
+
+            // Item Name
+            TextView itemName = new TextView(this);
+            itemName.setText(order.getName());
+            itemName.setTextSize(15);
+            itemName.setTypeface(null, Typeface.BOLD);
+            itemName.setTextColor(ContextCompat.getColor(this, R.color.black));
+
+            // Quantity text (e.g., "x2")
+            TextView itemQuantity = new TextView(this);
+            itemQuantity.setText(String.format("x%d", order.getAmount()));
+            itemQuantity.setTextSize(14);
+            itemQuantity.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+            itemQuantity.setTypeface(null, Typeface.BOLD);
+
+            infoLayout.addView(itemName);
+            infoLayout.addView(itemQuantity);
+            itemLayout.addView(infoLayout);
+
+            // ----- TOTAL PRICE -----
+            TextView itemTotalPrice = new TextView(this);
+            double total = order.getFood().getPrice() * order.getAmount();
+            itemTotalPrice.setText(String.format("PHP %.2f", total));
+            itemTotalPrice.setTextSize(14);
+            itemTotalPrice.setTypeface(null, Typeface.BOLD);
+            itemTotalPrice.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+            itemTotalPrice.setGravity(Gravity.END);
+
+            LinearLayout.LayoutParams priceParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            priceParams.setMargins(dpToPx(8), 0, 0, 0);
+            itemTotalPrice.setLayoutParams(priceParams);
+
+            itemLayout.addView(itemTotalPrice);
+
+            // ----- ADD TO CONTAINER -----
+            checkoutContainer.addView(itemLayout);
+        }
+
+    }
+
+    // Utility
+    private int dpToPx(int dp) {
+        return Math.round(dp * getResources().getDisplayMetrics().density);
+    }
+
+    private boolean isAnyDeliveryOptionSelected() {
+        return isPrioritySelected || isStandardSelected || isSaverSelected;
+    }
+
+    private void getSelectedDeliveryOptionLinearLayout() {
+
+        priorityOption.setOnClickListener(view -> {
+            resetDeliveryOptions();
+
+            isPrioritySelected = true;
+            isStandardSelected = false;
+            isSaverSelected = false;
+            deliveryFeeTXT.setText("PHP 100.00");
+            totalPriceTXT.setText(String.format("PHP %.2f", totalPrice + 100.00));
+
+            priorityOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.darkgreen));
+            priorityTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
+            priorityPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
+
+            updateCheckoutButtonState();
+        });
+
+        standardOption.setOnClickListener(view -> {
+            resetDeliveryOptions();
+
+            isPrioritySelected = false;
+            isStandardSelected = true;
+            isSaverSelected = false;
+            deliveryFeeTXT.setText("PHP 50.00");
+            totalPriceTXT.setText(String.format("PHP %.2f", totalPrice + 50.00));
+
+            standardOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.darkgreen));
+            standardTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
+            standardPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
+
+            updateCheckoutButtonState();
+        });
+
+        saverOption.setOnClickListener(view -> {
+            resetDeliveryOptions();
+
+            isPrioritySelected = false;
+            isStandardSelected = false;
+            isSaverSelected = true;
+            deliveryFeeTXT.setText("PHP 20.00");
+            totalPriceTXT.setText(String.format("PHP %.2f", totalPrice + 20.00));
+
+            saverOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.darkgreen));
+            saverTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
+            saverPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
+
+            updateCheckoutButtonState();
+        });
+    }
+
+    private void resetDeliveryOptions() {
+        // Reset backgrounds
+        priorityOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightgray));
+        standardOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightgray));
+        saverOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightgray));
+
+        // Reset text colors
+        priorityTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
+        priorityPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+
+        standardTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
+        standardPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+
+        saverTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
+        saverPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+    }
+
+    private void updateCheckoutButtonState(){
+        if(isAnyDeliveryOptionSelected()){
+            checkoutBTN.setEnabled(true);
+            checkoutBTN.setAlpha(1.0f);
+        } else {
+            checkoutBTN.setEnabled(false);
+            checkoutBTN.setAlpha(0.5f);
+        }
+    }
+
+}

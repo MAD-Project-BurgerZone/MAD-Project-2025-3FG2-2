@@ -7,12 +7,14 @@ public class FoodItem {
     private String food;
     private double price;
     private String description;
+    private int imageResourceId;
 
-    public FoodItem(String food, double price, String description){
+    public FoodItem(String food, double price, String description, int imageResourceId) {
 
         this.food = food;
         this.price = price;
         this.description = description;
+        this.imageResourceId = imageResourceId;
 
     }
 
@@ -38,6 +40,12 @@ public class FoodItem {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+    public int getImageResourceId() {
+        return imageResourceId;
+    }
+    public void setImageResourceId(int imageResourceId) {
+        this.imageResourceId = imageResourceId;
     }
 
 }

@@ -20,7 +20,6 @@ public class NavBarControl {
             public void onClick(View v) {
                 Intent intent = new Intent(context, LoginActivity.class);
                 intent.removeExtra(IntentKeys.USER);
-
                 AlertDialogBuilder dialog = new AlertDialogBuilder(
                         context,
                         "Log Out?",
@@ -38,6 +37,7 @@ public class NavBarControl {
                                             @Override
                                             public void onClick(android.content.DialogInterface dialog, int which) {
                                                 context.startActivity(intent);
+                                                intent.removeExtra(IntentKeys.USER_EMAIL);
                                                 if (context instanceof android.app.Activity) {
                                                     ((Activity) context).finish();
                                                 }
@@ -47,6 +47,24 @@ public class NavBarControl {
                         },
                         null
                 );
+            }
+        });
+
+        cartBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CartpageActivity.class);
+                intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+                context.startActivity(intent);
+            }
+        });
+
+        homeBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, HomeActivity.class);
+                intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+                context.startActivity(intent);
             }
         });
     }

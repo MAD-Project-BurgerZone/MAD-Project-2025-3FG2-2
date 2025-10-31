@@ -102,7 +102,7 @@ public class HomeActivity extends AppCompatActivity {
         imageParams.setMargins(0, 0, 0, dpToPx(20));
         imageView.setLayoutParams(imageParams);
         //placeholder
-        imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cheeseburg));
+        imageView.setImageDrawable(ContextCompat.getDrawable(this, item.getImageResourceId()));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setBackground(ContextCompat.getDrawable(this, R.drawable.imagetopradius));
         imageView.setClipToOutline(true);

@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:backgroundTint="@color/green">
+    android:backgroundTint="@color/green"
+    android:id="@+id/main"
+    android:background="@color/green">
 
     <!-- Header -->
     <include
@@ -16,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,11 +34,18 @@
                 android:text="Your Cart"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:textColor="@color/darkgreen"
                 android:padding="8dp" />
 
-            <!-- Example Cart Item -->
+            <LinearLayout
+                android:id="@+id/cartContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <!-- Example Cart Item -->
+            </LinearLayout>
 
-            <!-- Repeat item blocks dynamically using RecyclerView in actual app -->
         </LinearLayout>
     </ScrollView>
 
@@ -45,9 +55,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="8dp"
-        android:background="@drawable/rounded_square_top"
-        android:backgroundTint="@color/white"
-        android:elevation="6dp">
+        android:background="@drawable/shadedsquare"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,12 +70,14 @@
                 android:layout_height="wrap_content"
                 android:text="Total"
                 android:textStyle="bold"
+                android:textColor="@color/darkgray"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvTotalPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/darkgreen"
                 android:text="$17.97"
                 android:textStyle="bold"
                 android:textSize="16sp" />

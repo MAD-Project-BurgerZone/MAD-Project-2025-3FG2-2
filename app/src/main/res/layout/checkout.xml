@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:backgroundTint="@color/green">
+    android:backgroundTint="@color/green"
+    android:background="@color/green"
+    android:id="@+id/main">
 
     <include
         layout="@layout/header"
@@ -15,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,49 +47,21 @@
                         android:layout_weight="1"
                         android:text="Order Summary"
                         android:textStyle="bold"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add Item" />
                 </LinearLayout>
 
                 <!-- Item Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="8dp"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:id="@+id/checkoutContainer">
 
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:contentDescription="item image"
-                        android:scaleType="centerInside"
-                        android:src="@mipmap/burger" />
+                    <!-- Dynamically added items will go here -->
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:paddingStart="10dp"
-                        android:text="Item Name"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="Price"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
                 </LinearLayout>
-
                 <!-- Subtotal -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -106,13 +81,16 @@
                             android:text="Subtotal"
                             android:textStyle="bold"
                             android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"/>
+                            android:layout_marginBottom="10dp"
+                            android:textColor="@color/darkgray"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Price"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:id="@+id/subtotalTXT"
+                            android:textColor="@color/green"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -126,12 +104,15 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Delivery Fee"
+                            android:textColor="@color/darkgray"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Price"
+                            android:text="PHP"
+                            android:id="@+id/deliveryFeeTXT"
+                            android:textColor="@color/green"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
@@ -162,7 +143,9 @@
                         android:layout_height="wrap_content"
                         android:text="Delivery Option"
                         android:textStyle="bold"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
+
                 </LinearLayout>
 
                 <!-- Delivery Choices -->
@@ -181,18 +164,24 @@
                         android:layout_marginBottom="4dp"
                         android:background="@drawable/rounded_background"
                         android:backgroundTint="@color/lightgray"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:id="@+id/priorityOption"
+                        >
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Priority" />
+                            android:textColor="@color/darkgray"
+                            android:text="Priority"
+                            android:id="@+id/priorityTXT"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Price" />
+                            android:textColor="@color/darkgreen"
+                            android:text="PHP 100"
+                            android:id="@+id/priorityPriceTXT"/>
                     </LinearLayout>
 
                     <!-- Standard -->
@@ -204,18 +193,23 @@
                         android:layout_marginBottom="4dp"
                         android:background="@drawable/rounded_background"
                         android:backgroundTint="@color/lightgray"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:id="@+id/standardOption">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Standard" />
+                            android:textColor="@color/darkgray"
+                            android:text="Standard"
+                            android:id="@+id/standardTXT"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Price" />
+                            android:textColor="@color/darkgreen"
+                            android:text="PHP 50"
+                            android:id="@+id/standardPriceTXT"/>
                     </LinearLayout>
 
                     <!-- Saver -->
@@ -227,18 +221,23 @@
                         android:layout_marginBottom="4dp"
                         android:background="@drawable/rounded_background"
                         android:backgroundTint="@color/lightgray"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:id="@+id/saverOption">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Saver" />
+                            android:textColor="@color/darkgray"
+                            android:text="Saver"
+                            android:id="@+id/saverTXT"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Price" />
+                            android:textColor="@color/darkgreen"
+                            android:text="PHP 25"
+                            android:id="@+id/saverPriceTXT"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -266,7 +265,8 @@
                         android:layout_height="wrap_content"
                         android:text="Payment Options"
                         android:textStyle="bold"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textColor="@color/black"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -275,49 +275,60 @@
                     android:orientation="vertical"
                     android:padding="8dp">
 
-                    <!-- Cash -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="12dp"
-                        android:layout_marginBottom="4dp"
-                        android:background="@drawable/rounded_background"
-                        android:backgroundTint="@color/lightgray"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="0dp"
+                        <!-- Cash -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Cash" />
+                            android:orientation="horizontal"
+                            android:padding="12dp"
+                            android:layout_marginBottom="4dp"
+                            android:background="@drawable/rounded_background"
+                            android:backgroundTint="@color/lightgray"
+                            android:gravity="center"
+                            android:id="@+id/cashChoice"
+                            >
 
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Cash"
+                                android:textColor="@color/darkgray"/>
 
-                    <!-- Other -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="12dp"
-                        android:layout_marginBottom="4dp"
-                        android:background="@drawable/rounded_background"
-                        android:backgroundTint="@color/lightgray"
-                        android:gravity="center">
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/cashRBTN"
+                                android:buttonTint="@color/darkgreen"
+                                android:checked="true"/>
+                        </LinearLayout>
 
-                        <TextView
-                            android:layout_width="0dp"
+                        <!-- Other -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Other" />
+                            android:orientation="horizontal"
+                            android:padding="12dp"
+                            android:layout_marginBottom="4dp"
+                            android:background="@drawable/rounded_background"
+                            android:backgroundTint="@color/lightgray"
+                            android:gravity="center"
+                            android:id="@+id/otherChoice">
 
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Other"
+                                android:textColor="@color/darkgray"/>
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/otherRBTN"
+                                android:buttonTint="@color/darkgreen"/>
+                        </LinearLayout>
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -330,7 +341,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="8dp"
-        android:background="@drawable/rounded_square_top"
+        android:background="@drawable/shadedsquare"
         android:backgroundTint="@color/white"
         android:elevation="6dp">
 
@@ -345,15 +356,18 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Total"
+                android:textColor="@color/darkgreen"
                 android:textStyle="bold"
                 android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Price"
+                android:text="PHP"
+                android:textColor="@color/green"
                 android:textStyle="bold"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:id="@+id/totalPriceTXT"/>
         </LinearLayout>
 
         <Button
@@ -363,7 +377,8 @@
             android:textStyle="bold"
             android:background="@drawable/rounded_background"
             android:backgroundTint="@color/darkgreen"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:id="@+id/checkoutBTN"/>
     </LinearLayout>
 
     <include
