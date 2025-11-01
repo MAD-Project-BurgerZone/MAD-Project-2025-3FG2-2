@@ -90,12 +90,16 @@ public class CheckoutActivity extends AppCompatActivity {
 
         //Manual RadioButton Behavior, Since each radio button is in different containers
         cashRBTN.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            selectedPaymentMethod = "Cash on Delivery";
-            if (isChecked) otherRBTN.setChecked(false);
+            if (isChecked) {
+                otherRBTN.setChecked(false);
+                selectedPaymentMethod = "Cash on Delivery";
+            }
         });
         otherRBTN.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            selectedPaymentMethod = "Other Payment Methods";
-            if (isChecked) cashRBTN.setChecked(false);
+            if (isChecked) {
+                cashRBTN.setChecked(false);
+                selectedPaymentMethod = "Other Payment Method";
+            }
         });
 
         checkoutBTN.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +131,7 @@ public class CheckoutActivity extends AppCompatActivity {
         checkoutContainer.removeAllViews();
 
         for (FoodOrder order : cart.getCart().values()) {
-            // ----- PARENT CARD -----
+            //PARENT CARD
             LinearLayout itemLayout = new LinearLayout(this);
             itemLayout.setOrientation(LinearLayout.HORIZONTAL);
             itemLayout.setGravity(Gravity.CENTER_VERTICAL);
@@ -145,7 +149,7 @@ public class CheckoutActivity extends AppCompatActivity {
             itemParams.setMargins(0, 0, 0, dpToPx(8));
             itemLayout.setLayoutParams(itemParams);
 
-            // ----- IMAGE -----
+            //IMAGE
             ImageView itemImage = new ImageView(this);
             itemImage.setImageResource(order.getFood().getImageResourceId());
             LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(dpToPx(60), dpToPx(60));
@@ -154,7 +158,7 @@ public class CheckoutActivity extends AppCompatActivity {
             itemImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             itemLayout.addView(itemImage);
 
-            // ----- TEXT INFO -----
+            //TEXT INFO
             LinearLayout infoLayout = new LinearLayout(this);
             infoLayout.setOrientation(LinearLayout.VERTICAL);
             LinearLayout.LayoutParams infoParams =
@@ -168,7 +172,7 @@ public class CheckoutActivity extends AppCompatActivity {
             itemName.setTypeface(null, Typeface.BOLD);
             itemName.setTextColor(ContextCompat.getColor(this, R.color.black));
 
-            // Quantity text (e.g., "x2")
+            // Quantity text
             TextView itemQuantity = new TextView(this);
             itemQuantity.setText(String.format("x%d", order.getAmount()));
             itemQuantity.setTextSize(14);
