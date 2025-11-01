@@ -43,16 +43,16 @@ public class AlertDialogBuilder {
                 .show();
     }
 
-    public AlertDialogBuilder(Context context, String title, String message, boolean cancellable, DialogInterface.OnClickListener callback, DialogInterface.OnClickListener negativeCallback, View customView, int bgColor, int titleColor, int messageColor, int positiveButtonColor, int negativeButtonColor) {
+    public AlertDialogBuilder(Context context, String title, String message, boolean cancellable, DialogInterface.OnClickListener callback, DialogInterface.OnClickListener negativeCallback, View customView, int bgColor, int titleColor, int messageColor, int positiveButtonColor, int negativeButtonColor, String positiveButtonText, String negativeButtonText) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title)
                 .setMessage(message)
                 .setCancelable(cancellable)
-                .setPositiveButton("Submit", callback);
+                .setPositiveButton(positiveButtonText, callback);
 
         if (negativeCallback != null) {
-            builder.setNegativeButton("Cancel", negativeCallback);
+            builder.setNegativeButton(negativeButtonText, negativeCallback);
         }
 
         if (customView != null) {

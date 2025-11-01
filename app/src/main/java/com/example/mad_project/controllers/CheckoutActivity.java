@@ -86,6 +86,20 @@ public class CheckoutActivity extends AppCompatActivity {
 
         selectedPaymentMethod = "Cash on Delivery"; //Default Payment Method
 
+        //Set Default Delivery to Standar
+        isPrioritySelected = false;
+        isStandardSelected = true;
+        isSaverSelected = false;
+        selectedDeliveryOption = "Standard Delivery";
+        deliveryFeeTXT.setText("PHP 50.00");
+        totalPriceTXT.setText(String.format("PHP %.2f", totalPrice + 50.00));
+
+        standardOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.darkgreen));
+        standardTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
+        standardPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
+
+        updateCheckoutButtonState();
+
         //Clickable Layouts for Payment Method
         cashChoice.setOnClickListener(view -> cashRBTN.setChecked(true));
         otherChoice.setOnClickListener(view -> otherRBTN.setChecked(true));
@@ -370,17 +384,17 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // --- Delivery Info ---
         TextView deliveryInfo = new TextView(this);
-        deliveryInfo.setTypeface(null, Typeface.BOLD);
+        deliveryInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         deliveryInfo.setText("Delivery Option: " + selectedDeliveryOption);
-        deliveryInfo.setTextColor(ContextCompat.getColor(this, R.color.black));
+        deliveryInfo.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
         deliveryInfo.setPadding(0, dpToPx(10), 0, 0);
         mainLayout.addView(deliveryInfo);
 
         // --- Payment Info ---
         TextView paymentInfo = new TextView(this);
-        paymentInfo.setTypeface(null, Typeface.BOLD);
+        paymentInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         paymentInfo.setText("Payment Method: " + selectedPaymentMethod);
-        paymentInfo.setTextColor(ContextCompat.getColor(this, R.color.black));
+        paymentInfo.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
         paymentInfo.setPadding(0, dpToPx(6), 0, 0);
         mainLayout.addView(paymentInfo);
 
@@ -399,27 +413,70 @@ public class CheckoutActivity extends AppCompatActivity {
                 "Confirm Purchase",
                 "Please review your order below:",
                 true,
-                (dialog, which) -> {
+                (dialogs, whichis) -> {
+
+                    //Make the Success Dialog Layout
                     currentUser.getUserCart().clearCart(); // clear cart
                     currentUser.getUserCart().refreshCartView(this, findViewById(R.id.navCart), currentUser);
                     currentUser.getUserCart().refreshCartView(this, findViewById(R.id.notificationContainer), currentUser);
-                    dialog.dismiss();
+                    dialogs.dismiss();
 
-                    // Success + Redirect to Home
-                    android.widget.Toast.makeText(this, "Order placed successfully!", android.widget.Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
+                    // === Success Dialog Layout ===
+                    LinearLayout successLayout = new LinearLayout(this);
+                    successLayout.setOrientation(LinearLayout.VERTICAL);
+                    successLayout.setGravity(Gravity.CENTER);
+                    successLayout.setPadding(dpToPx(24), dpToPx(24), dpToPx(24), dpToPx(24));
+
+                    ImageView checkIcon = new ImageView(this);
+                    checkIcon.setImageResource(R.drawable.ic_check_green);
+                    LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(dpToPx(80), dpToPx(80));
+                    iconParams.bottomMargin = dpToPx(16);
+                    checkIcon.setLayoutParams(iconParams);
+                    successLayout.addView(checkIcon);
+
+                    TextView successText = new TextView(this);
+                    successText.setText("Your order has been placed successfully!");
+                    successText.setTextColor(ContextCompat.getColor(this, R.color.black));
+                    successText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                    successText.setGravity(Gravity.CENTER);
+                    successLayout.addView(successText);
+
+                    //Show the Success Dialog Layout
+                    new AlertDialogBuilder(
+                            this,
+                            "Success",
+                            "Order Placed Successfully!",
+                            false, // no extra message box area
+                            (dialog, which) -> {
+                                dialog.dismiss();
+
+                                // Redirect to Home
+                                Intent intent = new Intent(this, HomeActivity.class);
+                                intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            },
+                            null,
+                            successLayout,
+                            ContextCompat.getColor(this, R.color.white),
+                            ContextCompat.getColor(this, R.color.darkgreen),
+                            ContextCompat.getColor(this, R.color.black),
+                            ContextCompat.getColor(this, R.color.green),
+                            ContextCompat.getColor(this, R.color.darkgray),
+                            "OK",
+                            null
+                    );
                 },
                 (dialog, which) -> dialog.dismiss(), // Cancel
                 mainLayout,
-                ContextCompat.getColor(this, R.color.white),       // bgColor
-                ContextCompat.getColor(this, R.color.darkgreen),   // titleColor
-                ContextCompat.getColor(this, R.color.black),       // messageColor
-                ContextCompat.getColor(this, R.color.green),       // positiveButtonColor
-                ContextCompat.getColor(this, R.color.darkgray)     // negativeButtonColor
+                ContextCompat.getColor(this, R.color.white),
+                ContextCompat.getColor(this, R.color.darkgreen),
+                ContextCompat.getColor(this, R.color.black),
+                ContextCompat.getColor(this, R.color.green),
+                ContextCompat.getColor(this, R.color.darkgray),
+                "CONFIRM",
+                "CANCEL"
         );
     }
 

@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +70,30 @@ public class HomeActivity extends AppCompatActivity {
         currentUser = User.UserList.getUser(intent.getStringExtra(IntentKeys.USER_EMAIL));
         welcomeTXT.setText("Welcome, " + currentUser.getUsername() + "!");
 
+        Button LearnMoreBTN = findViewById(R.id.learnMoreBTN);
+        Button OrderNowBTN = findViewById(R.id.orderNowBTN);
+
+        //Direct to Learn More
+        LearnMoreBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, LearnMore.class);
+                intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+
+        //Click Order Now to Scroll to Food Items
+        OrderNowBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScrollView scrollView = findViewById(R.id.foodItemsScroll);
+                scrollView.smoothScrollTo(0, flex.getTop() - dpToPx(80, HomeActivity.this));
+            }
+        });
+
+        //Get Food Items
         List<FoodItem> foodItems = DataProvider.provideFoodItems();
 
         NavBarControl.initializeNavBarControls(this, currentUser,
@@ -187,7 +212,7 @@ public class HomeActivity extends AppCompatActivity {
                 dpToPx(38, this)
         );
         addButton.setLayoutParams(buttonParams);
-        addButton.setBackground(ContextCompat.getDrawable(this, R.drawable.roundedrect));
+        addButton.setBackground(ContextCompat.getDrawable(this, R.drawable.round));
         addButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.white));
         addButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.add));
         addButton.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
@@ -304,11 +329,13 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 },
                 mainLayout, // customview
-                ContextCompat.getColor(context, R.color.white),      // bgColor
-                ContextCompat.getColor(context, R.color.darkgreen),  // titleColor
-                ContextCompat.getColor(context, R.color.black),       // messageColor
-                ContextCompat.getColor(context, R.color.green),  // positiveButtonColor
-                ContextCompat.getColor(context, R.color.darkgray)        // negativeButtonColor
+                ContextCompat.getColor(context, R.color.white),
+                ContextCompat.getColor(context, R.color.darkgreen),
+                ContextCompat.getColor(context, R.color.black),
+                ContextCompat.getColor(context, R.color.green),
+                ContextCompat.getColor(context, R.color.darkgray),
+                "Add to Cart",
+                "Cancel"
         );
     }
 
