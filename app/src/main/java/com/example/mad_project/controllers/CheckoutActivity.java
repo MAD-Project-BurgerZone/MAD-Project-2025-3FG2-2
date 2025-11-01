@@ -84,6 +84,8 @@ public class CheckoutActivity extends AppCompatActivity {
         otherChoice = findViewById(R.id.otherChoice);
         cashChoice = findViewById(R.id.cashChoice);
 
+        selectedPaymentMethod = "Cash on Delivery"; //Default Payment Method
+
         //Clickable Layouts for Payment Method
         cashChoice.setOnClickListener(view -> cashRBTN.setChecked(true));
         otherChoice.setOnClickListener(view -> otherRBTN.setChecked(true));
