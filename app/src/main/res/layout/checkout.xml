@@ -123,6 +123,82 @@
                 android:layout_height="5dp"
                 android:background="#CCCCCC" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:elevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Delivery Details"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="Edit"
+                        android:textStyle="bold"
+                        android:backgroundTint="@color/darkgreen"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recipient: John Dela Cruz"
+                        android:textColor="@color/black"
+                        android:paddingBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Address: 123 Mabini St., Malolos City, Bulacan"
+                        android:textColor="@color/black"
+                        android:paddingBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contact: +63 912 345 6789"
+                        android:textColor="@color/black"
+                        android:paddingBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Status: Out for Delivery"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="#CCCCCC" />
+
             <!-- DELIVERY OPTION -->
             <LinearLayout
                 android:layout_width="match_parent"
