@@ -24,6 +24,7 @@
             <ImageView
                 android:layout_width="30sp"
                 android:layout_height="30sp"
+
                 android:src="@drawable/home_white"
                 android:contentDescription="Home Icon"
                 android:layout_marginBottom="-5dp"
@@ -76,7 +77,56 @@
 
             </LinearLayout>
 
+
+
         </FrameLayout>
+
+        <!--Orders-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginRight="17dp"
+            android:id="@+id/Orders">
+            <ImageView
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:src="@drawable/order_icon"
+                android:contentDescription="Home Icon"
+                android:layout_marginBottom="-5dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="ORDER"
+                android:textSize="13sp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginRight="20dp"
+            android:id="@+id/History">
+            <ImageView
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:src="@drawable/history"
+                android:contentDescription="Home Icon"
+                android:layout_marginBottom="-5dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="HISTORY"
+                android:textSize="13sp"
+                />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
