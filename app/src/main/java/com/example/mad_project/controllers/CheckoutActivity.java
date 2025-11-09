@@ -5,12 +5,10 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -27,9 +25,10 @@ import com.example.mad_project.models.User;
 import com.example.mad_project.utils.AlertDialogBuilder;
 import com.example.mad_project.utils.IntentKeys;
 
+import java.util.ArrayList;
+
 public class CheckoutActivity extends AppCompatActivity {
 
-    //Elements
     Button checkoutBTN;
     LinearLayout itemContainer;
     RadioButton cashRBTN, otherRBTN;
@@ -43,7 +42,8 @@ public class CheckoutActivity extends AppCompatActivity {
     boolean isPrioritySelected = false;
     boolean isStandardSelected = false;
     boolean isSaverSelected = false;
-    double totalPrice;
+    double subtotalPrice;
+    double deliveryFee = 50.0; // default fee for Standard Delivery
     LinearLayout otherChoice, cashChoice;
 
     @Override
@@ -51,18 +51,18 @@ public class CheckoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.checkout);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         initialize();
     }
 
-    private void initialize(){
-
-        Intent intent = getIntent();
-        currentUser = User.UserList.getUser(intent.getStringExtra(IntentKeys.USER_EMAIL));
+    private void initialize() {
+        currentUser = User.UserList.getUser(getIntent().getStringExtra(IntentKeys.USER_EMAIL));
 
         itemContainer = findViewById(R.id.checkoutContainer);
         checkoutBTN = findViewById(R.id.checkoutBTN);
@@ -71,7 +71,8 @@ public class CheckoutActivity extends AppCompatActivity {
         subtotalTXT = findViewById(R.id.subtotalTXT);
         deliveryFeeTXT = findViewById(R.id.deliveryFeeTXT);
         totalPriceTXT = findViewById(R.id.totalPriceTXT);
-        totalPrice = currentUser.getUserCart().calculateTotalPrice();
+        subtotalPrice = currentUser.getUserCart().calculateTotalPrice();
+
         priorityOption = findViewById(R.id.priorityOption);
         standardOption = findViewById(R.id.standardOption);
         saverOption = findViewById(R.id.saverOption);
@@ -81,18 +82,17 @@ public class CheckoutActivity extends AppCompatActivity {
         priorityPriceTXT = findViewById(R.id.priorityPriceTXT);
         standardPriceTXT = findViewById(R.id.standardPriceTXT);
         saverPriceTXT = findViewById(R.id.saverPriceTXT);
+
         otherChoice = findViewById(R.id.otherChoice);
         cashChoice = findViewById(R.id.cashChoice);
 
-        selectedPaymentMethod = "Cash on Delivery"; //Default Payment Method
-
-        //Set Default Delivery to Standar
-        isPrioritySelected = false;
-        isStandardSelected = true;
-        isSaverSelected = false;
+        // Default selections
+        selectedPaymentMethod = "Cash on Delivery";
         selectedDeliveryOption = "Standard Delivery";
-        deliveryFeeTXT.setText("PHP 50.00");
-        totalPriceTXT.setText(String.format("PHP %.2f", totalPrice + 50.00));
+        isStandardSelected = true;
+
+        deliveryFeeTXT.setText(String.format("PHP %.2f", deliveryFee));
+        totalPriceTXT.setText(String.format("PHP %.2f", subtotalPrice + deliveryFee));
 
         standardOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.darkgreen));
         standardTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
@@ -100,17 +100,16 @@ public class CheckoutActivity extends AppCompatActivity {
 
         updateCheckoutButtonState();
 
-        //Clickable Layouts for Payment Method
-        cashChoice.setOnClickListener(view -> cashRBTN.setChecked(true));
-        otherChoice.setOnClickListener(view -> otherRBTN.setChecked(true));
+        cashChoice.setOnClickListener(v -> cashRBTN.setChecked(true));
+        otherChoice.setOnClickListener(v -> otherRBTN.setChecked(true));
 
-        //Manual RadioButton Behavior, Since each radio button is in different containers
         cashRBTN.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 otherRBTN.setChecked(false);
                 selectedPaymentMethod = "Cash on Delivery";
             }
         });
+
         otherRBTN.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 cashRBTN.setChecked(false);
@@ -118,77 +117,96 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
 
-        checkoutBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCheckoutSummaryDialog();
-            }
-        });
+        checkoutBTN.setOnClickListener(v -> showCheckoutSummaryDialog());
 
-        //Get Selected Delivery Option
-        getSelectedDeliveryOptionLinearLayout();
+        setupDeliveryOptionSelection();
+        generateCheckoutItems(currentUser.getUserCart());
+        subtotalTXT.setText(String.format("PHP %.2f", subtotalPrice));
 
-        //Initialize the Navbar
+        // Initialize Navbar
         NavBarControl.initializeNavBarControls(this, currentUser,
                 findViewById(R.id.navMenu),
                 findViewById(R.id.navCart),
                 findViewById(R.id.navLogout),
+                findViewById(R.id.Orders),
                 findViewById(R.id.notificationContainer));
+    }
 
-        //Generate Checkout Items
-        generateCheckoutItems(currentUser.getUserCart());
-        subtotalTXT.setText(String.format("PHP %.2f", totalPrice));
+    private void setupDeliveryOptionSelection() {
+        priorityOption.setOnClickListener(v -> selectDeliveryOption("Priority Delivery", 100.00, priorityOption, priorityTXT, priorityPriceTXT));
+        standardOption.setOnClickListener(v -> selectDeliveryOption("Standard Delivery", 50.00, standardOption, standardTXT, standardPriceTXT));
+        saverOption.setOnClickListener(v -> selectDeliveryOption("Saver Delivery", 25.00, saverOption, saverTXT, saverPriceTXT));
+    }
+
+    private void selectDeliveryOption(String option, double fee, LinearLayout layout, TextView txt, TextView priceTxt) {
+        resetDeliveryOptions();
+        selectedDeliveryOption = option;
+        deliveryFee = fee;
+
+        deliveryFeeTXT.setText(String.format("PHP %.2f", deliveryFee));
+        totalPriceTXT.setText(String.format("PHP %.2f", subtotalPrice + deliveryFee));
+
+        layout.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.darkgreen));
+        txt.setTextColor(ContextCompat.getColor(this, R.color.white));
+        priceTxt.setTextColor(ContextCompat.getColor(this, R.color.white));
+
+        isPrioritySelected = option.equals("Priority Delivery");
+        isStandardSelected = option.equals("Standard Delivery");
+        isSaverSelected = option.equals("Saver Delivery");
+
         updateCheckoutButtonState();
+    }
 
+    private void resetDeliveryOptions() {
+        priorityOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightgray));
+        standardOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightgray));
+        saverOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightgray));
+
+        priorityTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
+        standardTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
+        saverTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
+
+        priorityPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+        standardPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+        saverPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+    }
+
+    private void updateCheckoutButtonState() {
+        boolean enabled = isPrioritySelected || isStandardSelected || isSaverSelected;
+        checkoutBTN.setEnabled(enabled);
+        checkoutBTN.setAlpha(enabled ? 1.0f : 0.5f);
     }
 
     private void generateCheckoutItems(Cart cart) {
-        LinearLayout checkoutContainer = findViewById(R.id.checkoutContainer);
-        checkoutContainer.removeAllViews();
-
+        itemContainer.removeAllViews();
         for (FoodOrder order : cart.getCart().values()) {
-            //PARENT CARD
-            LinearLayout itemLayout = new LinearLayout(this);
-            itemLayout.setOrientation(LinearLayout.HORIZONTAL);
-            itemLayout.setGravity(Gravity.CENTER_VERTICAL);
+            LinearLayout itemRow = new LinearLayout(this);
+            itemRow.setOrientation(LinearLayout.HORIZONTAL);
+            itemRow.setGravity(Gravity.CENTER_VERTICAL);
+            itemRow.setPadding(dpToPx(12), dpToPx(12), dpToPx(12), dpToPx(12));
+            itemRow.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_background));
+            itemRow.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightgray));
+            itemRow.setElevation(dpToPx(3));
 
-            int pad = dpToPx(12);
-            itemLayout.setPadding(pad, pad, pad, pad);
-            itemLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_background));
-            itemLayout.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightgray));
-            itemLayout.setElevation(dpToPx(3));
-
-            LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            itemParams.setMargins(0, 0, 0, dpToPx(8));
-            itemLayout.setLayoutParams(itemParams);
-
-            //IMAGE
-            ImageView itemImage = new ImageView(this);
-            itemImage.setImageResource(order.getFood().getImageResourceId());
+            ImageView img = new ImageView(this);
+            img.setImageResource(order.getFood().getImageResourceId());
             LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(dpToPx(60), dpToPx(60));
             imgParams.setMarginEnd(dpToPx(12));
-            itemImage.setLayoutParams(imgParams);
-            itemImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            itemLayout.addView(itemImage);
+            img.setLayoutParams(imgParams);
+            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            itemRow.addView(img);
 
-            //TEXT INFO
             LinearLayout infoLayout = new LinearLayout(this);
             infoLayout.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams infoParams =
-                    new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+            LinearLayout.LayoutParams infoParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
             infoLayout.setLayoutParams(infoParams);
 
-            // Item Name
             TextView itemName = new TextView(this);
             itemName.setText(order.getName());
             itemName.setTextSize(15);
             itemName.setTypeface(null, Typeface.BOLD);
             itemName.setTextColor(ContextCompat.getColor(this, R.color.black));
 
-            // Quantity text
             TextView itemQuantity = new TextView(this);
             itemQuantity.setText(String.format("x%d", order.getAmount()));
             itemQuantity.setTextSize(14);
@@ -197,9 +215,8 @@ public class CheckoutActivity extends AppCompatActivity {
 
             infoLayout.addView(itemName);
             infoLayout.addView(itemQuantity);
-            itemLayout.addView(infoLayout);
+            itemRow.addView(infoLayout);
 
-            // ----- TOTAL PRICE -----
             TextView itemTotalPrice = new TextView(this);
             double total = order.getFood().getPrice() * order.getAmount();
             itemTotalPrice.setText(String.format("PHP %.2f", total));
@@ -207,268 +224,105 @@ public class CheckoutActivity extends AppCompatActivity {
             itemTotalPrice.setTypeface(null, Typeface.BOLD);
             itemTotalPrice.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
             itemTotalPrice.setGravity(Gravity.END);
+            itemRow.addView(itemTotalPrice);
 
-            LinearLayout.LayoutParams priceParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            priceParams.setMargins(dpToPx(8), 0, 0, 0);
-            itemTotalPrice.setLayoutParams(priceParams);
-
-            itemLayout.addView(itemTotalPrice);
-
-            // ----- ADD TO CONTAINER -----
-            checkoutContainer.addView(itemLayout);
+            itemContainer.addView(itemRow);
         }
-
     }
 
-    // Utility
     private int dpToPx(int dp) {
         return Math.round(dp * getResources().getDisplayMetrics().density);
     }
 
-    private boolean isAnyDeliveryOptionSelected() {
-        return isPrioritySelected || isStandardSelected || isSaverSelected;
-    }
-
-    private void getSelectedDeliveryOptionLinearLayout() {
-
-        priorityOption.setOnClickListener(view -> {
-
-            resetDeliveryOptions();
-
-            isPrioritySelected = true;
-            isStandardSelected = false;
-            isSaverSelected = false;
-            selectedDeliveryOption = "Priority Delivery";
-            deliveryFeeTXT.setText("PHP 100.00");
-            totalPriceTXT.setText(String.format("PHP %.2f", totalPrice + 100.00));
-
-            priorityOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.darkgreen));
-            priorityTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
-            priorityPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
-
-            updateCheckoutButtonState();
-        });
-
-        standardOption.setOnClickListener(view -> {
-            resetDeliveryOptions();
-
-            isPrioritySelected = false;
-            isStandardSelected = true;
-            isSaverSelected = false;
-            selectedDeliveryOption = "Standard Delivery";
-            deliveryFeeTXT.setText("PHP 50.00");
-            totalPriceTXT.setText(String.format("PHP %.2f", totalPrice + 50.00));
-
-            standardOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.darkgreen));
-            standardTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
-            standardPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
-
-            updateCheckoutButtonState();
-        });
-
-        saverOption.setOnClickListener(view -> {
-            resetDeliveryOptions();
-
-            isPrioritySelected = false;
-            isStandardSelected = false;
-            isSaverSelected = true;
-            selectedDeliveryOption = "Saver Delivery";
-            deliveryFeeTXT.setText("PHP 20.00");
-            totalPriceTXT.setText(String.format("PHP %.2f", totalPrice + 20.00));
-
-            saverOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.darkgreen));
-            saverTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
-            saverPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.white));
-
-            updateCheckoutButtonState();
-        });
-    }
-
-    private void resetDeliveryOptions() {
-        // Reset backgrounds
-        priorityOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightgray));
-        standardOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightgray));
-        saverOption.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lightgray));
-
-        // Reset text colors
-        priorityTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
-        priorityPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
-
-        standardTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
-        standardPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
-
-        saverTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
-        saverPriceTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
-    }
-
-    private void updateCheckoutButtonState(){
-        if(isAnyDeliveryOptionSelected()){
-            checkoutBTN.setEnabled(true);
-            checkoutBTN.setAlpha(1.0f);
-        } else {
-            checkoutBTN.setEnabled(false);
-            checkoutBTN.setAlpha(0.5f);
-        }
-    }
-
+    // === ALERT DIALOG INTEGRATION ===
     private void showCheckoutSummaryDialog() {
-        // === Build Scrollable Custom View ===
         LinearLayout mainLayout = new LinearLayout(this);
         mainLayout.setOrientation(LinearLayout.VERTICAL);
         mainLayout.setPadding(dpToPx(20), dpToPx(20), dpToPx(20), dpToPx(20));
 
-        // Title
         TextView title = new TextView(this);
         title.setText("Order Summary");
         title.setTypeface(null, Typeface.BOLD);
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        title.setTextColor(ContextCompat.getColor(this, R.color.black));
         title.setGravity(Gravity.CENTER_HORIZONTAL);
         title.setPadding(0, 0, 0, dpToPx(10));
         mainLayout.addView(title);
 
-        // Scroll container for items
-        android.widget.ScrollView scrollView = new android.widget.ScrollView(this);
         LinearLayout itemListLayout = new LinearLayout(this);
         itemListLayout.setOrientation(LinearLayout.VERTICAL);
-        scrollView.addView(itemListLayout);
 
-        // Populate items from cart
         for (FoodOrder order : currentUser.getUserCart().getCart().values()) {
             LinearLayout itemRow = new LinearLayout(this);
             itemRow.setOrientation(LinearLayout.HORIZONTAL);
             itemRow.setPadding(0, dpToPx(8), 0, dpToPx(8));
             itemRow.setGravity(Gravity.CENTER_VERTICAL);
 
-            // === IMAGE ===
-            ImageView itemImage = new ImageView(this);
-            itemImage.setImageResource(order.getFood().getImageResourceId());
+            ImageView img = new ImageView(this);
+            img.setImageResource(order.getFood().getImageResourceId());
             LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(dpToPx(45), dpToPx(45));
             imgParams.setMarginEnd(dpToPx(10));
-            itemImage.setLayoutParams(imgParams);
-            itemImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            itemRow.addView(itemImage);
+            img.setLayoutParams(imgParams);
+            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            itemRow.addView(img);
 
-            // === NAME, QUANTITY, TOTAL ===
-            TextView itemName = new TextView(this);
-            itemName.setText(order.getName());
-            itemName.setTextColor(ContextCompat.getColor(this, R.color.black));
-            itemName.setTextSize(14);
-            itemName.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+            TextView name = new TextView(this);
+            name.setText(order.getName());
+            name.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+            itemRow.addView(name);
 
-            TextView itemAmount = new TextView(this);
-            itemAmount.setText(String.format("x%d", order.getAmount()));
-            itemAmount.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
-            itemAmount.setTypeface(null, Typeface.BOLD);
-            itemAmount.setPadding(dpToPx(4), 0, dpToPx(4), 0);
+            TextView qty = new TextView(this);
+            qty.setText("x" + order.getAmount());
+            itemRow.addView(qty);
 
-            TextView itemTotal = new TextView(this);
-            double total = order.getFood().getPrice() * order.getAmount();
-            itemTotal.setText(String.format("PHP %.2f", total));
-            itemTotal.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
-            itemTotal.setTypeface(null, Typeface.BOLD);
-            itemTotal.setPadding(dpToPx(8), 0, 0, 0);
+            TextView total = new TextView(this);
+            total.setText(String.format("PHP %.2f", order.getFood().getPrice() * order.getAmount()));
+            itemRow.addView(total);
 
-            itemRow.addView(itemName);
-            itemRow.addView(itemAmount);
-            itemRow.addView(itemTotal);
-
-            // Add item row to list
             itemListLayout.addView(itemRow);
         }
 
-        mainLayout.addView(scrollView);
+        mainLayout.addView(itemListLayout);
 
-        // --- Delivery Info ---
+        // Delivery info
         TextView deliveryInfo = new TextView(this);
-        deliveryInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        deliveryInfo.setText("Delivery Option: " + selectedDeliveryOption);
-        deliveryInfo.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
-        deliveryInfo.setPadding(0, dpToPx(10), 0, 0);
+        deliveryInfo.setText("Delivery: " + selectedDeliveryOption);
         mainLayout.addView(deliveryInfo);
 
-        // --- Payment Info ---
+        // Payment info
         TextView paymentInfo = new TextView(this);
-        paymentInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        paymentInfo.setText("Payment Method: " + selectedPaymentMethod);
-        paymentInfo.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
-        paymentInfo.setPadding(0, dpToPx(6), 0, 0);
+        paymentInfo.setText("Payment: " + selectedPaymentMethod);
         mainLayout.addView(paymentInfo);
 
-        // --- Total Price ---
-        TextView totalTXT = new TextView(this);
-        totalTXT.setText(String.format("Total Price: %s", totalPriceTXT.getText()));
-        totalTXT.setTypeface(null, Typeface.BOLD);
-        totalTXT.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        totalTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
-        totalTXT.setPadding(0, dpToPx(10), 0, 0);
-        mainLayout.addView(totalTXT);
+        // Total Price
+        TextView totalPriceView = new TextView(this);
+        totalPriceView.setText(String.format("Total: PHP %.2f", subtotalPrice + deliveryFee));
+        totalPriceView.setTypeface(null, Typeface.BOLD);
+        mainLayout.addView(totalPriceView);
 
-        //
-        AlertDialogBuilder build = new AlertDialogBuilder(
+        // Show the AlertDialog
+        new AlertDialogBuilder(
                 this,
                 "Confirm Purchase",
                 "Please review your order below:",
                 true,
-                (dialogs, whichis) -> {
-
-                    //Make the Success Dialog Layout
-                    currentUser.getUserCart().clearCart(); // clear cart
+                (dialog, which) -> {
+                    // On Confirm
+                    currentUser.addOrdersToHistory(new ArrayList<>(currentUser.getUserCart().getCart().values()));
+                    currentUser.getUserCart().clearCart();
                     currentUser.getUserCart().refreshCartView(this, findViewById(R.id.navCart), currentUser);
                     currentUser.getUserCart().refreshCartView(this, findViewById(R.id.notificationContainer), currentUser);
-                    dialogs.dismiss();
 
-                    // === Success Dialog Layout ===
-                    LinearLayout successLayout = new LinearLayout(this);
-                    successLayout.setOrientation(LinearLayout.VERTICAL);
-                    successLayout.setGravity(Gravity.CENTER);
-                    successLayout.setPadding(dpToPx(24), dpToPx(24), dpToPx(24), dpToPx(24));
+                    dialog.dismiss();
 
-                    ImageView checkIcon = new ImageView(this);
-                    checkIcon.setImageResource(R.drawable.ic_check_green);
-                    LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(dpToPx(80), dpToPx(80));
-                    iconParams.bottomMargin = dpToPx(16);
-                    checkIcon.setLayoutParams(iconParams);
-                    successLayout.addView(checkIcon);
-
-                    TextView successText = new TextView(this);
-                    successText.setText("Your order has been placed successfully!");
-                    successText.setTextColor(ContextCompat.getColor(this, R.color.black));
-                    successText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                    successText.setGravity(Gravity.CENTER);
-                    successLayout.addView(successText);
-
-                    //Show the Success Dialog Layout
-                    new AlertDialogBuilder(
-                            this,
-                            "Success",
-                            "Order Placed Successfully!",
-                            false, // no extra message box area
-                            (dialog, which) -> {
-                                dialog.dismiss();
-
-                                // Redirect to Home
-                                Intent intent = new Intent(this, HomeActivity.class);
-                                intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
-                            },
-                            null,
-                            successLayout,
-                            ContextCompat.getColor(this, R.color.white),
-                            ContextCompat.getColor(this, R.color.darkgreen),
-                            ContextCompat.getColor(this, R.color.black),
-                            ContextCompat.getColor(this, R.color.green),
-                            ContextCompat.getColor(this, R.color.darkgray),
-                            "OK",
-                            null
-                    );
+                    // Redirect to OrderTrackingActivity
+                    Intent trackingIntent = new Intent(this, OrderTrackingActivity.class);
+                    trackingIntent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+                    trackingIntent.putExtra("DELIVERY_FEE", deliveryFee);
+                    trackingIntent.putExtra("DELIVERY_OPTION", selectedDeliveryOption);
+                    startActivity(trackingIntent);
+                    finish();
                 },
-                (dialog, which) -> dialog.dismiss(), // Cancel
+                (dialog, which) -> dialog.dismiss(),
                 mainLayout,
                 ContextCompat.getColor(this, R.color.white),
                 ContextCompat.getColor(this, R.color.darkgreen),
@@ -479,6 +333,4 @@ public class CheckoutActivity extends AppCompatActivity {
                 "CANCEL"
         );
     }
-
-
 }

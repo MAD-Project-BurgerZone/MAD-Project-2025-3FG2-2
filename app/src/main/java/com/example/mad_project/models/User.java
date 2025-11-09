@@ -7,59 +7,57 @@ import com.example.mad_project.utils.AlertDialogBuilder;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User implements Serializable {
 
-    public static class UserList{
+    public static class UserList {
 
         private static HashMap<String, User> userList;
 
-        private static void checkUserListInitialized(){
-            if(userList == null){
+        private static void checkUserListInitialized() {
+            if (userList == null) {
                 userList = new HashMap<>();
             }
         }
 
-        public static void initializeUserList(){
+        public static void initializeUserList() {
             userList = DataProvider.provideUsers();
         }
 
-        //Check if correct credentials
-        public static boolean checkCredentials(String email, String password, Context context){
-
+        public static boolean checkCredentials(String email, String password, Context context) {
             checkUserListInitialized();
 
-            if(!userList.containsKey(email)){
-                AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Incorrect Credentials", "Incorrect Email or Password, Try Again", true, null);
+            if (!userList.containsKey(email)) {
+                new AlertDialogBuilder(context, "Incorrect Credentials", "Incorrect Email or Password, Try Again", true, null);
                 return false;
             }
 
-            if(!userList.get(email).getPassword().equals(password)){
-                AlertDialogBuilder dialog = new AlertDialogBuilder(context, "Incorrect Credentials", "Incorrect Email or Password, Try Again", true, null);
+            if (!userList.get(email).getPassword().equals(password)) {
+                new AlertDialogBuilder(context, "Incorrect Credentials", "Incorrect Email or Password, Try Again", true, null);
                 return false;
             }
 
             return true;
-
         }
 
-        public static void addUser(String email, User newUser){
+        public static void addUser(String email, User newUser) {
             checkUserListInitialized();
-            if(!userList.containsKey(email)){
+            if (!userList.containsKey(email)) {
                 userList.put(email, newUser);
             }
         }
 
-        public static boolean checkUser(String email){
+        public static boolean checkUser(String email) {
             checkUserListInitialized();
             return userList.containsKey(email);
         }
 
-        public static User getUser(String email){
+        public static User getUser(String email) {
             checkUserListInitialized();
             return userList.get(email);
         }
-
     }
 
     private String email;
@@ -67,15 +65,22 @@ public class User implements Serializable {
     private String password;
     private Cart userCart;
 
-    public User(String email, String username, String password){
+    // NEW: List of past orders
+    private List<FoodOrder> ordersHistory;
+
+    public User(String email, String username, String password) {
         this.email = email;
         this.username = username;
         this.password = password;
-        if(userCart == null){
+
+        if (userCart == null) {
             userCart = new Cart(this);
         }
+
+        ordersHistory = new ArrayList<>();
     }
 
+    // --- Getters & Setters ---
     public String getUsername() {
         return username;
     }
@@ -100,12 +105,26 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public Cart getUserCart(){
+    public Cart getUserCart() {
         return userCart;
     }
 
-    public void setUserCart(Cart userCart){
+    public void setUserCart(Cart userCart) {
         this.userCart = userCart;
     }
 
+    // --- Orders History ---
+    public List<FoodOrder> getOrdersHistory() {
+        return ordersHistory;
+    }
+
+    public void addOrderToHistory(FoodOrder order) {
+        ordersHistory.add(order);
+    }
+
+    public void addOrdersToHistory(List<FoodOrder> orders) {
+        if (orders != null) {
+            ordersHistory.addAll(orders);
+        }
+    }
 }
