@@ -1,7 +1,6 @@
 package com.example.mad_project.models;
 
 import android.content.Context;
-
 import com.example.mad_project.data.DataProvider;
 import com.example.mad_project.utils.AlertDialogBuilder;
 
@@ -64,8 +63,7 @@ public class User implements Serializable {
     private String username;
     private String password;
     private Cart userCart;
-
-    // NEW: List of past orders
+    private double lastDeliveryFee = 0.0; // Stores latest delivery fee
     private List<FoodOrder> ordersHistory;
 
     public User(String email, String username, String password) {
@@ -81,42 +79,21 @@ public class User implements Serializable {
     }
 
     // --- Getters & Setters ---
-    public String getUsername() {
-        return username;
-    }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public Cart getUserCart() { return userCart; }
+    public void setUserCart(Cart userCart) { this.userCart = userCart; }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Cart getUserCart() {
-        return userCart;
-    }
-
-    public void setUserCart(Cart userCart) {
-        this.userCart = userCart;
-    }
+    // --- Last Delivery Fee ---
+    public double getLastDeliveryFee() { return lastDeliveryFee; }
+    public void setLastDeliveryFee(double fee) { this.lastDeliveryFee = fee; }
 
     // --- Orders History ---
-    public List<FoodOrder> getOrdersHistory() {
-        return ordersHistory;
-    }
+    public List<FoodOrder> getOrdersHistory() { return ordersHistory; }
 
     public void addOrderToHistory(FoodOrder order) {
         ordersHistory.add(order);

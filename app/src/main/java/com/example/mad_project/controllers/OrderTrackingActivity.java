@@ -22,7 +22,6 @@ public class OrderTrackingActivity extends AppCompatActivity {
     LinearLayout checkoutContainer;
     double deliveryFee = 0.0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +39,11 @@ public class OrderTrackingActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        deliveryFee = getIntent().getDoubleExtra("DELIVERY_FEE", 0.0);
-
         Intent intent = getIntent();
         currentUser = User.UserList.getUser(intent.getStringExtra(IntentKeys.USER_EMAIL));
+
+        // Retrieve delivery fee from user
+        deliveryFee = currentUser.getLastDeliveryFee();
 
         checkoutContainer = findViewById(R.id.checkoutContainer);
 
@@ -110,5 +110,4 @@ public class OrderTrackingActivity extends AppCompatActivity {
         totalTXT.setPadding(10, 20, 10, 10);
         checkoutContainer.addView(totalTXT);
     }
-
 }

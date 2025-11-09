@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -236,91 +237,161 @@ public class CheckoutActivity extends AppCompatActivity {
 
     // === ALERT DIALOG INTEGRATION ===
     private void showCheckoutSummaryDialog() {
+        // === Build Scrollable Custom View for Summary ===
         LinearLayout mainLayout = new LinearLayout(this);
         mainLayout.setOrientation(LinearLayout.VERTICAL);
         mainLayout.setPadding(dpToPx(20), dpToPx(20), dpToPx(20), dpToPx(20));
 
+        // Title
         TextView title = new TextView(this);
         title.setText("Order Summary");
         title.setTypeface(null, Typeface.BOLD);
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        title.setTextColor(ContextCompat.getColor(this, R.color.black));
         title.setGravity(Gravity.CENTER_HORIZONTAL);
         title.setPadding(0, 0, 0, dpToPx(10));
         mainLayout.addView(title);
 
+        // Scrollable container for items
+        ScrollView scrollView = new ScrollView(this);
         LinearLayout itemListLayout = new LinearLayout(this);
         itemListLayout.setOrientation(LinearLayout.VERTICAL);
+        scrollView.addView(itemListLayout);
 
+        // Populate items from cart
         for (FoodOrder order : currentUser.getUserCart().getCart().values()) {
             LinearLayout itemRow = new LinearLayout(this);
             itemRow.setOrientation(LinearLayout.HORIZONTAL);
             itemRow.setPadding(0, dpToPx(8), 0, dpToPx(8));
             itemRow.setGravity(Gravity.CENTER_VERTICAL);
 
-            ImageView img = new ImageView(this);
-            img.setImageResource(order.getFood().getImageResourceId());
+            // Image
+            ImageView itemImage = new ImageView(this);
+            itemImage.setImageResource(order.getFood().getImageResourceId());
             LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(dpToPx(45), dpToPx(45));
             imgParams.setMarginEnd(dpToPx(10));
-            img.setLayoutParams(imgParams);
-            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            itemRow.addView(img);
+            itemImage.setLayoutParams(imgParams);
+            itemImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            itemRow.addView(itemImage);
 
-            TextView name = new TextView(this);
-            name.setText(order.getName());
-            name.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
-            itemRow.addView(name);
+            // Name and Quantity
+            TextView itemName = new TextView(this);
+            itemName.setText(order.getName());
+            itemName.setTextColor(ContextCompat.getColor(this, R.color.black));
+            itemName.setTextSize(14);
+            itemName.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
 
-            TextView qty = new TextView(this);
-            qty.setText("x" + order.getAmount());
-            itemRow.addView(qty);
+            TextView itemAmount = new TextView(this);
+            itemAmount.setText(String.format("x%d", order.getAmount()));
+            itemAmount.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+            itemAmount.setTypeface(null, Typeface.BOLD);
+            itemAmount.setPadding(dpToPx(4), 0, dpToPx(4), 0);
 
-            TextView total = new TextView(this);
-            total.setText(String.format("PHP %.2f", order.getFood().getPrice() * order.getAmount()));
-            itemRow.addView(total);
+            TextView itemTotal = new TextView(this);
+            double total = order.getFood().getPrice() * order.getAmount();
+            itemTotal.setText(String.format("PHP %.2f", total));
+            itemTotal.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+            itemTotal.setTypeface(null, Typeface.BOLD);
+            itemTotal.setPadding(dpToPx(8), 0, 0, 0);
+
+            itemRow.addView(itemName);
+            itemRow.addView(itemAmount);
+            itemRow.addView(itemTotal);
 
             itemListLayout.addView(itemRow);
         }
 
-        mainLayout.addView(itemListLayout);
+        mainLayout.addView(scrollView);
 
-        // Delivery info
+        // Delivery Info
         TextView deliveryInfo = new TextView(this);
-        deliveryInfo.setText("Delivery: " + selectedDeliveryOption);
+        deliveryInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        deliveryInfo.setText("Delivery Option: " + selectedDeliveryOption);
+        deliveryInfo.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
+        deliveryInfo.setPadding(0, dpToPx(10), 0, 0);
         mainLayout.addView(deliveryInfo);
 
-        // Payment info
+        // Payment Info
         TextView paymentInfo = new TextView(this);
-        paymentInfo.setText("Payment: " + selectedPaymentMethod);
+        paymentInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        paymentInfo.setText("Payment Method: " + selectedPaymentMethod);
+        paymentInfo.setTextColor(ContextCompat.getColor(this, R.color.darkgray));
+        paymentInfo.setPadding(0, dpToPx(6), 0, 0);
         mainLayout.addView(paymentInfo);
 
         // Total Price
-        TextView totalPriceView = new TextView(this);
-        totalPriceView.setText(String.format("Total: PHP %.2f", subtotalPrice + deliveryFee));
-        totalPriceView.setTypeface(null, Typeface.BOLD);
-        mainLayout.addView(totalPriceView);
+        TextView totalTXT = new TextView(this);
+        totalTXT.setText(String.format("Total Price: %s", totalPriceTXT.getText()));
+        totalTXT.setTypeface(null, Typeface.BOLD);
+        totalTXT.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        totalTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+        totalTXT.setPadding(0, dpToPx(10), 0, 0);
+        mainLayout.addView(totalTXT);
 
-        // Show the AlertDialog
+        // === Show Checkout Summary Dialog ===
         new AlertDialogBuilder(
                 this,
                 "Confirm Purchase",
                 "Please review your order below:",
                 true,
                 (dialog, which) -> {
-                    // On Confirm
+                    // Save delivery fee in user
+                    currentUser.setLastDeliveryFee(getSelectedDeliveryFee());
+                    // Add cart items to user's order history
                     currentUser.addOrdersToHistory(new ArrayList<>(currentUser.getUserCart().getCart().values()));
+
+                    // Clear the cart
                     currentUser.getUserCart().clearCart();
                     currentUser.getUserCart().refreshCartView(this, findViewById(R.id.navCart), currentUser);
                     currentUser.getUserCart().refreshCartView(this, findViewById(R.id.notificationContainer), currentUser);
 
                     dialog.dismiss();
 
-                    // Redirect to OrderTrackingActivity
-                    Intent trackingIntent = new Intent(this, OrderTrackingActivity.class);
-                    trackingIntent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
-                    trackingIntent.putExtra("DELIVERY_FEE", deliveryFee);
-                    trackingIntent.putExtra("DELIVERY_OPTION", selectedDeliveryOption);
-                    startActivity(trackingIntent);
-                    finish();
+                    // === Success Dialog Layout ===
+                    LinearLayout successLayout = new LinearLayout(this);
+                    successLayout.setOrientation(LinearLayout.VERTICAL);
+                    successLayout.setGravity(Gravity.CENTER);
+                    successLayout.setPadding(dpToPx(24), dpToPx(24), dpToPx(24), dpToPx(24));
+
+                    ImageView checkIcon = new ImageView(this);
+                    checkIcon.setImageResource(R.drawable.ic_check_green);
+                    LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(dpToPx(80), dpToPx(80));
+                    iconParams.bottomMargin = dpToPx(16);
+                    checkIcon.setLayoutParams(iconParams);
+                    successLayout.addView(checkIcon);
+
+                    TextView successText = new TextView(this);
+                    successText.setText("Your order has been placed successfully!");
+                    successText.setTextColor(ContextCompat.getColor(this, R.color.black));
+                    successText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                    successText.setGravity(Gravity.CENTER);
+                    successLayout.addView(successText);
+
+                    // Show success alert
+                    new AlertDialogBuilder(
+                            this,
+                            "Success",
+                            "Order Placed Successfully!",
+                            false,
+                            (successDialog, which1) -> {
+                                successDialog.dismiss();
+
+                                Intent home = new Intent(this, HomeActivity.class);
+                                home.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+                                startActivity(home);
+                                finish();
+                            },
+                            null,
+                            successLayout,
+                            ContextCompat.getColor(this, R.color.white),
+                            ContextCompat.getColor(this, R.color.darkgreen),
+                            ContextCompat.getColor(this, R.color.black),
+                            ContextCompat.getColor(this, R.color.green),
+                            ContextCompat.getColor(this, R.color.darkgray),
+                            "OK",
+                            null
+                    );
+
                 },
                 (dialog, which) -> dialog.dismiss(),
                 mainLayout,
@@ -332,5 +403,13 @@ public class CheckoutActivity extends AppCompatActivity {
                 "CONFIRM",
                 "CANCEL"
         );
+    }
+
+    // Utility to get selected delivery fee
+    private double getSelectedDeliveryFee() {
+        if (isPrioritySelected) return 100.0;
+        if (isStandardSelected) return 50.0;
+        if (isSaverSelected) return 25.0;
+        return 50.0; // default fallback
     }
 }
