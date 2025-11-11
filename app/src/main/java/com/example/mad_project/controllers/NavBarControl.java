@@ -10,75 +10,76 @@ import com.example.mad_project.utils.AlertDialogBuilder;
 import com.example.mad_project.utils.IntentKeys;
 
 public class NavBarControl {
-    public static void initializeNavBarControls(Context context, User currentUser, LinearLayout homeBTN, LinearLayout cartBTN, LinearLayout logoutBTN, LinearLayout ordersBTN, LinearLayout NotificationContainer) {
+    public static void initializeNavBarControls(
+            Context context,
+            User currentUser,
+            LinearLayout homeBTN,
+            LinearLayout cartBTN,
+            LinearLayout logoutBTN,
+            LinearLayout ordersBTN,    // Tracking
+            LinearLayout historyBTN,   // History
+            LinearLayout NotificationContainer
+    ) {
 
-        //Initialize NavBar Buttons
+        // Refresh cart badge/notification
         currentUser.getUserCart().refreshCartView(context, NotificationContainer, currentUser);
 
-        logoutBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, LoginActivity.class);
-                intent.removeExtra(IntentKeys.USER);
-                AlertDialogBuilder dialog = new AlertDialogBuilder(
-                        context,
-                        "Log Out?",
-                        "Are you sure you want to log out?",
-                        false,
-                        new android.content.DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(android.content.DialogInterface dialog, int which) {
-                                AlertDialogBuilder confirm = new AlertDialogBuilder(
-                                        context,
-                                        "Success!",
-                                        "You have been logged out.",
-                                        false,
-                                        new android.content.DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(android.content.DialogInterface dialog, int which) {
-                                                context.startActivity(intent);
-                                                intent.removeExtra(IntentKeys.USER_EMAIL);
-                                                if (context instanceof android.app.Activity) {
-                                                    ((Activity) context).finish();
-                                                }
-                                            }
-                                        });
+        // LOGOUT BUTTON
+        logoutBTN.setOnClickListener(v -> {
+            Intent intent = new Intent(context, LoginActivity.class);
+            intent.removeExtra(IntentKeys.USER);
+            new AlertDialogBuilder(
+                    context,
+                    "Log Out?",
+                    "Are you sure you want to log out?",
+                    false,
+                    (dialog, which) -> new AlertDialogBuilder(
+                            context,
+                            "Success!",
+                            "You have been logged out.",
+                            false,
+                            (confirmDialog, which1) -> {
+                                context.startActivity(intent);
+                                intent.removeExtra(IntentKeys.USER_EMAIL);
+                                if (context instanceof Activity) {
+                                    ((Activity) context).finish();
+                                }
                             }
-                        },
-                        null
-                );
-            }
+                    ),
+                    null
+            );
         });
 
-        cartBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, CartpageActivity.class);
-                intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
+        // CART BUTTON
+        cartBTN.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CartpageActivity.class);
+            intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         });
 
-        homeBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, HomeActivity.class);
-                intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
+        // HOME BUTTON
+        homeBTN.setOnClickListener(v -> {
+            Intent intent = new Intent(context, HomeActivity.class);
+            intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         });
 
-        ordersBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, OrderTrackingActivity.class);
-                intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
+        // ORDERS BUTTON → TRACKING
+        ordersBTN.setOnClickListener(v -> {
+            Intent intent = new Intent(context, OrderTrackingActivity.class);
+            intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        });
+
+        // HISTORY BUTTON → HISTORY PAGE
+        historyBTN.setOnClickListener(v -> {
+            Intent intent = new Intent(context, HistoryActivity.class);
+            intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         });
     }
-
 }

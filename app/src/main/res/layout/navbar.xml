@@ -111,7 +111,7 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_marginRight="20dp"
-            android:id="@+id/History">
+            android:id="@+id/navHistory">
             <ImageView
                 android:layout_width="30sp"
                 android:layout_height="30sp"

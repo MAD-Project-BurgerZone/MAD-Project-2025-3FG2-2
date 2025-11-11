@@ -38,6 +38,7 @@ public class LearnMore extends AppCompatActivity {
                 findViewById(R.id.navCart),
                 findViewById(R.id.navLogout),
                 findViewById(R.id.Orders),
+                findViewById(R.id.navHistory),
                 findViewById(R.id.notificationContainer));
     }
 }

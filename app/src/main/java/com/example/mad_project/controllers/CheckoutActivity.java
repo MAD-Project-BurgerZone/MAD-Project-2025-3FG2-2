@@ -21,12 +21,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.mad_project.R;
 import com.example.mad_project.models.Cart;
+import com.example.mad_project.models.CompletedOrder;
 import com.example.mad_project.models.FoodOrder;
 import com.example.mad_project.models.User;
 import com.example.mad_project.utils.AlertDialogBuilder;
 import com.example.mad_project.utils.IntentKeys;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CheckoutActivity extends AppCompatActivity {
 
@@ -44,7 +46,7 @@ public class CheckoutActivity extends AppCompatActivity {
     boolean isStandardSelected = false;
     boolean isSaverSelected = false;
     double subtotalPrice;
-    double deliveryFee = 50.0; // default fee for Standard Delivery
+    double deliveryFee = 50.0; // default fee
     LinearLayout otherChoice, cashChoice;
 
     @Override
@@ -124,19 +126,19 @@ public class CheckoutActivity extends AppCompatActivity {
         generateCheckoutItems(currentUser.getUserCart());
         subtotalTXT.setText(String.format("PHP %.2f", subtotalPrice));
 
-        // Initialize Navbar
         NavBarControl.initializeNavBarControls(this, currentUser,
                 findViewById(R.id.navMenu),
                 findViewById(R.id.navCart),
                 findViewById(R.id.navLogout),
                 findViewById(R.id.Orders),
+                findViewById(R.id.navHistory),
                 findViewById(R.id.notificationContainer));
     }
 
     private void setupDeliveryOptionSelection() {
-        priorityOption.setOnClickListener(v -> selectDeliveryOption("Priority Delivery", 100.00, priorityOption, priorityTXT, priorityPriceTXT));
-        standardOption.setOnClickListener(v -> selectDeliveryOption("Standard Delivery", 50.00, standardOption, standardTXT, standardPriceTXT));
-        saverOption.setOnClickListener(v -> selectDeliveryOption("Saver Delivery", 25.00, saverOption, saverTXT, saverPriceTXT));
+        priorityOption.setOnClickListener(v -> selectDeliveryOption("Priority Delivery", 100.0, priorityOption, priorityTXT, priorityPriceTXT));
+        standardOption.setOnClickListener(v -> selectDeliveryOption("Standard Delivery", 50.0, standardOption, standardTXT, standardPriceTXT));
+        saverOption.setOnClickListener(v -> selectDeliveryOption("Saver Delivery", 25.0, saverOption, saverTXT, saverPriceTXT));
     }
 
     private void selectDeliveryOption(String option, double fee, LinearLayout layout, TextView txt, TextView priceTxt) {
@@ -237,35 +239,22 @@ public class CheckoutActivity extends AppCompatActivity {
 
     // === ALERT DIALOG INTEGRATION ===
     private void showCheckoutSummaryDialog() {
-        // === Build Scrollable Custom View for Summary ===
         LinearLayout mainLayout = new LinearLayout(this);
         mainLayout.setOrientation(LinearLayout.VERTICAL);
         mainLayout.setPadding(dpToPx(20), dpToPx(20), dpToPx(20), dpToPx(20));
 
-        // Title
-        TextView title = new TextView(this);
-        title.setText("Order Summary");
-        title.setTypeface(null, Typeface.BOLD);
-        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        title.setTextColor(ContextCompat.getColor(this, R.color.black));
-        title.setGravity(Gravity.CENTER_HORIZONTAL);
-        title.setPadding(0, 0, 0, dpToPx(10));
-        mainLayout.addView(title);
-
-        // Scrollable container for items
+        // Populate items for summary
         ScrollView scrollView = new ScrollView(this);
         LinearLayout itemListLayout = new LinearLayout(this);
         itemListLayout.setOrientation(LinearLayout.VERTICAL);
         scrollView.addView(itemListLayout);
 
-        // Populate items from cart
         for (FoodOrder order : currentUser.getUserCart().getCart().values()) {
             LinearLayout itemRow = new LinearLayout(this);
             itemRow.setOrientation(LinearLayout.HORIZONTAL);
             itemRow.setPadding(0, dpToPx(8), 0, dpToPx(8));
             itemRow.setGravity(Gravity.CENTER_VERTICAL);
 
-            // Image
             ImageView itemImage = new ImageView(this);
             itemImage.setImageResource(order.getFood().getImageResourceId());
             LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(dpToPx(45), dpToPx(45));
@@ -274,7 +263,6 @@ public class CheckoutActivity extends AppCompatActivity {
             itemImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             itemRow.addView(itemImage);
 
-            // Name and Quantity
             TextView itemName = new TextView(this);
             itemName.setText(order.getName());
             itemName.setTextColor(ContextCompat.getColor(this, R.color.black));
@@ -303,7 +291,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         mainLayout.addView(scrollView);
 
-        // Delivery Info
+        // Delivery and payment info
         TextView deliveryInfo = new TextView(this);
         deliveryInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         deliveryInfo.setText("Delivery Option: " + selectedDeliveryOption);
@@ -311,7 +299,6 @@ public class CheckoutActivity extends AppCompatActivity {
         deliveryInfo.setPadding(0, dpToPx(10), 0, 0);
         mainLayout.addView(deliveryInfo);
 
-        // Payment Info
         TextView paymentInfo = new TextView(this);
         paymentInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         paymentInfo.setText("Payment Method: " + selectedPaymentMethod);
@@ -319,26 +306,31 @@ public class CheckoutActivity extends AppCompatActivity {
         paymentInfo.setPadding(0, dpToPx(6), 0, 0);
         mainLayout.addView(paymentInfo);
 
-        // Total Price
         TextView totalTXT = new TextView(this);
-        totalTXT.setText(String.format("Total Price: %s", totalPriceTXT.getText()));
+        double subtotal = currentUser.getUserCart().calculateTotalPrice();
+        double totalPrice = subtotal + getSelectedDeliveryFee();
+        totalTXT.setText(String.format("Total Price: PHP %.2f", totalPrice));
         totalTXT.setTypeface(null, Typeface.BOLD);
         totalTXT.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         totalTXT.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
         totalTXT.setPadding(0, dpToPx(10), 0, 0);
         mainLayout.addView(totalTXT);
 
-        // === Show Checkout Summary Dialog ===
+        // === Checkout confirmation ===
         new AlertDialogBuilder(
                 this,
                 "Confirm Purchase",
                 "Please review your order below:",
                 true,
                 (dialog, which) -> {
-                    // Save delivery fee in user
+                    // Get cart items
+                    List<FoodOrder> ordersToAdd = new ArrayList<>(currentUser.getUserCart().getCart().values());
+
+                    // ✅ Add orders to tracking only
+                    currentUser.addOrdersToTracking(ordersToAdd);
+
+                    // ✅ Save delivery fee in user
                     currentUser.setLastDeliveryFee(getSelectedDeliveryFee());
-                    // Add cart items to user's order history
-                    currentUser.addOrdersToHistory(new ArrayList<>(currentUser.getUserCart().getCart().values()));
 
                     // Clear the cart
                     currentUser.getUserCart().clearCart();
@@ -347,7 +339,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
                     dialog.dismiss();
 
-                    // === Success Dialog Layout ===
+                    // Success dialog (same as before)
                     LinearLayout successLayout = new LinearLayout(this);
                     successLayout.setOrientation(LinearLayout.VERTICAL);
                     successLayout.setGravity(Gravity.CENTER);
@@ -367,7 +359,6 @@ public class CheckoutActivity extends AppCompatActivity {
                     successText.setGravity(Gravity.CENTER);
                     successLayout.addView(successText);
 
-                    // Show success alert
                     new AlertDialogBuilder(
                             this,
                             "Success",
@@ -405,11 +396,10 @@ public class CheckoutActivity extends AppCompatActivity {
         );
     }
 
-    // Utility to get selected delivery fee
-    private double getSelectedDeliveryFee() {
+        private double getSelectedDeliveryFee() {
         if (isPrioritySelected) return 100.0;
         if (isStandardSelected) return 50.0;
         if (isSaverSelected) return 25.0;
-        return 50.0; // default fallback
+        return 50.0;
     }
 }

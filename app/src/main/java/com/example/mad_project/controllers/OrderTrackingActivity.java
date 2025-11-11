@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,11 +17,12 @@ import com.example.mad_project.models.FoodOrder;
 import com.example.mad_project.models.User;
 import com.example.mad_project.utils.IntentKeys;
 
+import java.util.ArrayList;
+
 public class OrderTrackingActivity extends AppCompatActivity {
 
     User currentUser;
     LinearLayout checkoutContainer;
-    double deliveryFee = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,30 +41,26 @@ public class OrderTrackingActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        Intent intent = getIntent();
-        currentUser = User.UserList.getUser(intent.getStringExtra(IntentKeys.USER_EMAIL));
-
-        // Retrieve delivery fee from user
-        deliveryFee = currentUser.getLastDeliveryFee();
-
+        currentUser = User.UserList.getUser(getIntent().getStringExtra(IntentKeys.USER_EMAIL));
         checkoutContainer = findViewById(R.id.checkoutContainer);
 
-        // Navbar
-        LinearLayout navbarRoot = findViewById(R.id.navbar_root);
         NavBarControl.initializeNavBarControls(this, currentUser,
-                navbarRoot.findViewById(R.id.navMenu),
-                navbarRoot.findViewById(R.id.navCart),
-                navbarRoot.findViewById(R.id.navLogout),
-                navbarRoot.findViewById(R.id.Orders),
-                navbarRoot.findViewById(R.id.notificationContainer));
+                findViewById(R.id.navMenu),
+                findViewById(R.id.navCart),
+                findViewById(R.id.navLogout),
+                findViewById(R.id.Orders),
+                findViewById(R.id.navHistory),
+                findViewById(R.id.notificationContainer));
 
         displayOrders();
+
+        findViewById(R.id.receivedBTN).setOnClickListener(v -> confirmOrderReceived());
     }
 
     private void displayOrders() {
         checkoutContainer.removeAllViews();
 
-        if (currentUser.getOrdersHistory().isEmpty()) {
+        if (currentUser.getTrackingOrders().isEmpty()) {
             TextView emptyMsg = new TextView(this);
             emptyMsg.setText("No orders found.");
             emptyMsg.setTextSize(18);
@@ -73,7 +71,7 @@ public class OrderTrackingActivity extends AppCompatActivity {
 
         double subtotal = 0.0;
 
-        for (FoodOrder order : currentUser.getOrdersHistory()) {
+        for (FoodOrder order : currentUser.getTrackingOrders()) {
             TextView tv1 = new TextView(this);
             TextView tv2 = new TextView(this);
             TextView tv3 = new TextView(this);
@@ -98,16 +96,41 @@ public class OrderTrackingActivity extends AppCompatActivity {
         }
 
         TextView deliveryTXT = new TextView(this);
-        deliveryTXT.setText("Delivery Fee: PHP " + String.format("%.2f", deliveryFee));
+        deliveryTXT.setText("Delivery Fee: PHP " + String.format("%.2f", currentUser.getLastDeliveryFee()));
         deliveryTXT.setTextSize(16);
         deliveryTXT.setPadding(10, 10, 10, 10);
         checkoutContainer.addView(deliveryTXT);
 
         TextView totalTXT = new TextView(this);
-        totalTXT.setText("Total: PHP " + String.format("%.2f", subtotal + deliveryFee));
+        totalTXT.setText("Total: PHP " + String.format("%.2f", subtotal + currentUser.getLastDeliveryFee()));
         totalTXT.setTextSize(18);
         totalTXT.setTypeface(null, android.graphics.Typeface.BOLD);
         totalTXT.setPadding(10, 20, 10, 10);
         checkoutContainer.addView(totalTXT);
+    }
+
+    private void confirmOrderReceived() {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirm Receipt")
+                .setMessage("Have you received your order?")
+                .setPositiveButton("Yes", (dialog, which) -> handleOrderReceived())
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void handleOrderReceived() {
+        if (!currentUser.getTrackingOrders().isEmpty()) {
+            currentUser.addCompletedOrder(
+                    new ArrayList<>(currentUser.getTrackingOrders()),
+                    currentUser.getLastDeliveryFee()
+            );
+            currentUser.clearTrackingOrders();
+            currentUser.setLastDeliveryFee(0.0);
+        }
+
+        Intent Intent = new Intent(this, OrderTrackingActivity.class);
+        Intent.putExtra(IntentKeys.USER_EMAIL, currentUser.getEmail());
+        startActivity(Intent);
+        finish();
     }
 }

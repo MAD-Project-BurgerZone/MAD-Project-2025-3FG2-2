@@ -37,7 +37,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Arriving Today, 3:00 PM"
+                    android:text="Arriving Today in 30 minutes"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="24sp" />
@@ -168,11 +168,12 @@
             android:gravity="center">
 
             <TextView
+                android:id="@+id/receivedBTN"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingLeft="160dp"
-                android:text="RECIEVED"
+                android:text="RECEIVED"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:gravity="center_vertical"/>

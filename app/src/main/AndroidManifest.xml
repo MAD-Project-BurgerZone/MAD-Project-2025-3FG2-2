@@ -47,6 +47,9 @@
         <activity
             android:name=".controllers.OrderTrackingActivity"
             android:exported="false" />
+
+        <activity android:name=".controllers.HistoryActivity" />
+
     </application>
 
 

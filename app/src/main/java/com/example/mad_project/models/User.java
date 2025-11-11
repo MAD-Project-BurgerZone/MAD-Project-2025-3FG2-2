@@ -5,14 +5,13 @@ import com.example.mad_project.data.DataProvider;
 import com.example.mad_project.utils.AlertDialogBuilder;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class User implements Serializable {
 
     public static class UserList {
-
         private static HashMap<String, User> userList;
 
         private static void checkUserListInitialized() {
@@ -63,45 +62,46 @@ public class User implements Serializable {
     private String username;
     private String password;
     private Cart userCart;
-    private double lastDeliveryFee = 0.0; // Stores latest delivery fee
-    private List<FoodOrder> ordersHistory;
+    private double lastDeliveryFee = 0.0;
+
+    private List<FoodOrder> trackingOrders;
+    private List<CompletedOrder> orderHistory;
 
     public User(String email, String username, String password) {
         this.email = email;
         this.username = username;
         this.password = password;
-
-        if (userCart == null) {
-            userCart = new Cart(this);
-        }
-
-        ordersHistory = new ArrayList<>();
+        this.userCart = new Cart(this);
+        trackingOrders = new ArrayList<>();
+        orderHistory = new ArrayList<>();
     }
 
-    // --- Getters & Setters ---
+    // Getters and setters
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
+
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
     public Cart getUserCart() { return userCart; }
     public void setUserCart(Cart userCart) { this.userCart = userCart; }
 
-    // --- Last Delivery Fee ---
     public double getLastDeliveryFee() { return lastDeliveryFee; }
     public void setLastDeliveryFee(double fee) { this.lastDeliveryFee = fee; }
 
-    // --- Orders History ---
-    public List<FoodOrder> getOrdersHistory() { return ordersHistory; }
+    public List<FoodOrder> getTrackingOrders() { return trackingOrders; }
 
-    public void addOrderToHistory(FoodOrder order) {
-        ordersHistory.add(order);
-    }
+    public void addOrderToTracking(FoodOrder order) { if (order != null) trackingOrders.add(order); }
+    public void addOrdersToTracking(List<FoodOrder> orders) { if (orders != null) trackingOrders.addAll(orders); }
+    public void clearTrackingOrders() { trackingOrders.clear(); }
 
-    public void addOrdersToHistory(List<FoodOrder> orders) {
-        if (orders != null) {
-            ordersHistory.addAll(orders);
+    public List<CompletedOrder> getOrderHistory() { return orderHistory; }
+    public void addCompletedOrder(List<FoodOrder> orders, double deliveryFee) {
+        if (orders != null && !orders.isEmpty()) {
+            orderHistory.add(new CompletedOrder(orders, deliveryFee));
         }
     }
 }
