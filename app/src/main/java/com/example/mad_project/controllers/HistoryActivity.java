@@ -1,5 +1,6 @@
 package com.example.mad_project.controllers;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -62,6 +63,7 @@ public class HistoryActivity extends AppCompatActivity {
             TextView emptyMsg = new TextView(this);
             emptyMsg.setText("No order history found.");
             emptyMsg.setTextSize(18);
+            emptyMsg.setTextColor(Color.BLACK); // Make it visible
             emptyMsg.setPadding(10, 10, 10, 10);
             historyContainer.addView(emptyMsg);
             return;
@@ -80,16 +82,19 @@ public class HistoryActivity extends AppCompatActivity {
 
                 tv1.setText("Item: " + order.getName());
                 tv1.setTextSize(16);
+                tv1.setTextColor(Color.BLACK); // visible
                 tv1.setPadding(10, 10, 10, 10);
                 historyContainer.addView(tv1);
 
                 tv3.setText("Quantity: " + order.getAmount());
                 tv3.setTextSize(16);
+                tv3.setTextColor(Color.BLACK); // visible
                 tv3.setPadding(10, 10, 10, 10);
                 historyContainer.addView(tv3);
 
                 tv2.setText("Price: PHP " + String.format("%.2f", itemTotal));
                 tv2.setTextSize(16);
+                tv2.setTextColor(Color.BLACK); // visible
                 tv2.setPadding(10, 10, 10, 10);
                 historyContainer.addView(tv2);
             }
@@ -97,6 +102,7 @@ public class HistoryActivity extends AppCompatActivity {
             TextView deliveryTXT = new TextView(this);
             deliveryTXT.setText("Delivery Fee: PHP " + String.format("%.2f", completed.getDeliveryFee()));
             deliveryTXT.setTextSize(16);
+            deliveryTXT.setTextColor(Color.BLACK); // visible
             deliveryTXT.setPadding(10, 10, 10, 10);
             historyContainer.addView(deliveryTXT);
 
@@ -104,11 +110,13 @@ public class HistoryActivity extends AppCompatActivity {
             totalTXT.setText("Total: PHP " + String.format("%.2f", subtotal + completed.getDeliveryFee()));
             totalTXT.setTextSize(18);
             totalTXT.setTypeface(null, android.graphics.Typeface.BOLD);
+            totalTXT.setTextColor(Color.BLACK); // visible
             totalTXT.setPadding(10, 20, 10, 10);
             historyContainer.addView(totalTXT);
 
             TextView separator = new TextView(this);
             separator.setText("_______________________________________________");
+            separator.setTextColor(Color.BLACK); // visible
             separator.setPadding(0, 10, 0, 10);
             historyContainer.addView(separator);
         }

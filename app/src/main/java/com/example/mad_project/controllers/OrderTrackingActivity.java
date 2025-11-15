@@ -1,6 +1,7 @@
 package com.example.mad_project.controllers;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -64,6 +65,7 @@ public class OrderTrackingActivity extends AppCompatActivity {
             TextView emptyMsg = new TextView(this);
             emptyMsg.setText("No orders found.");
             emptyMsg.setTextSize(18);
+            emptyMsg.setTextColor(Color.BLACK);
             emptyMsg.setPadding(10, 10, 10, 10);
             checkoutContainer.addView(emptyMsg);
             return;
@@ -80,16 +82,19 @@ public class OrderTrackingActivity extends AppCompatActivity {
             subtotal += itemTotal;
 
             tv1.setText("Item name: " + order.getName());
+            tv1.setTextColor(Color.BLACK);
             tv1.setTextSize(16);
             tv1.setPadding(10, 10, 10, 10);
             checkoutContainer.addView(tv1);
 
             tv3.setText("Quantity: " + order.getAmount());
+            tv3.setTextColor(Color.BLACK);
             tv3.setTextSize(16);
             tv3.setPadding(10, 10, 10, 10);
             checkoutContainer.addView(tv3);
 
             tv2.setText("Item price: PHP " + String.format("%.2f", itemTotal));
+            tv2.setTextColor(Color.BLACK);
             tv2.setTextSize(16);
             tv2.setPadding(10, 10, 10, 10);
             checkoutContainer.addView(tv2);
@@ -97,6 +102,7 @@ public class OrderTrackingActivity extends AppCompatActivity {
 
         TextView deliveryTXT = new TextView(this);
         deliveryTXT.setText("Delivery Fee: PHP " + String.format("%.2f", currentUser.getLastDeliveryFee()));
+        deliveryTXT.setTextColor(Color.BLACK);
         deliveryTXT.setTextSize(16);
         deliveryTXT.setPadding(10, 10, 10, 10);
         checkoutContainer.addView(deliveryTXT);
@@ -104,6 +110,7 @@ public class OrderTrackingActivity extends AppCompatActivity {
         TextView totalTXT = new TextView(this);
         totalTXT.setText("Total: PHP " + String.format("%.2f", subtotal + currentUser.getLastDeliveryFee()));
         totalTXT.setTextSize(18);
+        totalTXT.setTextColor(Color.BLACK);
         totalTXT.setTypeface(null, android.graphics.Typeface.BOLD);
         totalTXT.setPadding(10, 20, 10, 10);
         checkoutContainer.addView(totalTXT);
